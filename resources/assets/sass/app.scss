@@ -1,0 +1,25 @@
+@import 'vendor/normalize';
+@import 'vendor/font-awesome';
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
+@import 'variables';
+
+*, *:before, *:after{
+  outline: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-font-smoothing: antialiased;
+}
+
+body, html {
+    min-height: 100%;
+}
+
+body {
+    //background-color: $dark-bg;
+    //background-image: radial-gradient(circle farthest-side at 50% 0%, #343843, $dark-bg);
+    font-family: $main-font;
+    font-size: 18px;
+    //color: $dark-text;
+}
+
+@import 'stuff';
