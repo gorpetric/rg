@@ -9,6 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        if(!Auth::check()) return view('welcome');
         return view('home');
     }
 

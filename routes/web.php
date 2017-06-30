@@ -16,4 +16,6 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/login/{service}', 'SocialLoginController@redirect');
 Route::get('/login/{service}/callback', 'SocialLoginController@callback');
 
-Route::get('/logout', 'HomeController@logout')->name('logout')->middleware('auth');
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/logout', 'HomeController@logout')->name('logout');
+});

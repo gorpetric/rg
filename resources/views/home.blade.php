@@ -3,10 +3,8 @@
 @section('title'){{ 'Početna' }}@stop
 
 @section('content')
-<h1>Royal Gym</h1>
-@if(Auth::check())
-    <a href='{{ route("logout") }}'>Logout</a>
-@else
-    <a href='/login/facebook'>Login with Facebook</a>
-@endif
+<div class='container'>
+    <p>Home</p>
+</div>
+<div style='height: 1000px'></div>
 @stop
