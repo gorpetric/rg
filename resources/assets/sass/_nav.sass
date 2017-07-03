@@ -1,12 +1,53 @@
-.navigation
+nav.navigation
     position: fixed
     z-index: $z-nav
     top: 0
     left: 0
     width: 100%
-    background: darkgray
-    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.5)
+    height: $nav-height
+    background: white
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.5)
 
     .inner
         max-width: $container-width
         margin: 0 auto
+        display: flex
+        justify-content: space-between
+        align-items: center
+        height: 100%
+        color: black
+
+        @media(max-width: 400px)
+            span
+                display: none
+
+    .avatar
+        max-width: 50px
+
+    .logo
+        display: block
+        height: 100%
+        padding: 5px 0
+
+        img
+            max-height: 100%
+
+    .right
+        height: 100%
+        display: flex
+
+        .nav-link
+            display: flex
+            height: 100%
+            align-items: center
+            font-size: 25px
+            color: black
+            padding: 0px 10px
+
+.barbell
+    background:
+        image: url('/img/barbell2.jpg')
+        attachment: fixed
+        position: top
+        repeat: no-repeat
+    height: 25vh
