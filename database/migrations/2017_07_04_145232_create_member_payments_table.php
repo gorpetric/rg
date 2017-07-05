@@ -16,8 +16,8 @@ class CreateMemberPaymentsTable extends Migration
         Schema::create('member_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('member_id')->unsigned();
-            $table->string('type');
             $table->integer('value');
+            $table->text('description')->nullable();
             $table->timestamp('valid_from')->nullable();
             $table->timestamp('valid_until')->nullable();
             $table->timestamps();

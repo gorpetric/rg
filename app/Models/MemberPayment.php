@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MemberPayment extends Model
 {
-    protected $fillable = ['type', 'value', 'valid_from', 'valid_until'];
+    protected $fillable = ['value', 'description', 'valid_from', 'valid_until'];
 
     protected $dates = ['valid_from', 'valid_until'];
 
