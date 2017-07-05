@@ -15,7 +15,7 @@ class Member extends Model
 
     public function payments()
     {
-        return $this->hasMany(MemberPayment::class);
+        return $this->hasMany(MemberPayment::class)->orderBy('valid_until', 'desc');
     }
 
     public function scopeActive($query)

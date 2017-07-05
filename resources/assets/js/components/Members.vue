@@ -21,13 +21,11 @@
                             <th>Cijena</th>
                             <th>Vrijedi od</th>
                             <th>Vrijedi do</th>
-                            <th>Napomena</th>
                         </tr>
                         <tr v-for='payment in member.payments'>
                             <td>{{ payment.value }}</td>
                             <td>{{ payment.valid_from | moment }}</td>
                             <td>{{ payment.valid_until | moment }}</td>
-                            <td>{{ payment.description }}</td>
                         </tr>
                     </table>
                 </div>
@@ -48,9 +46,18 @@
                     <a href='#' @click.prevent='togglePayments(member.id)'>Prikaži plaćanja</a>
                 </div>
                 <div class='payments' :class='showPayments(member.id)'>
-                    <p v-for='payment in member.payments'>
-                        {{ payment.value }}
-                    </p>
+                    <table>
+                        <tr>
+                            <th>Cijena</th>
+                            <th>Vrijedi od</th>
+                            <th>Vrijedi do</th>
+                        </tr>
+                        <tr v-for='payment in member.payments'>
+                            <td>{{ payment.value }}</td>
+                            <td>{{ payment.valid_from | moment }}</td>
+                            <td>{{ payment.valid_until | moment }}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -115,7 +122,7 @@
                 return date.diff(moment().startOf('day'), 'days')
             },
             getLatestValidUntil(member) {
-                return moment(member.payments[member.payments.length - 1].valid_until)
+                return moment(member.payments[0].valid_until)
             },
             toggleInfo(id) {
                 if(this.toggleIDs.indexOf(id) > -1) {
