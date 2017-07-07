@@ -170,7 +170,7 @@
                 else return 'payments-showing'
             },
             setUpInputModelsForEachMember(members) {
-                for(let i = 0; i < (members.length - 1); i++) {
+                for(let i = 0; i < (members.length); i++) {
                     this.newPaymentInputs[members[i].id] = {
                         value: this.membership_monthly,
                         valid_from: this.getLatestValidUntil(members[i]).format('YYYY-MM-DD'),
