@@ -20,7 +20,7 @@ class CreateMembersTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('active')->default(0);
-            $table->timestamp('joined_at');
+            $table->timestamp('joined_at')->nullable()->default(NULL);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

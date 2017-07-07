@@ -68,8 +68,6 @@ class MembersController extends Controller
             'phone' => 'max:50',
         ]);
 
-        dd($request->all(), $member, $member->joined_at);
-
         $member->update([
             'name' => $request->name,
             'address' => $request->address ?: null,
