@@ -1,5 +1,6 @@
 <template>
     <section id='members'>
+        <p><a href='/clanovi/novi'>Novi član</a></p>
         <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu'>
         <div class='active'>
             <h2>Aktivni</h2>
@@ -16,6 +17,14 @@
                     <a href='#' @click.prevent='togglePayments(member.id)'>Prikaži plaćanja</a>
                 </div>
                 <div class='payments' :class='showPayments(member.id)'>
+                    <div v-if='newPaymentIDs.indexOf(member.id) < 0'><a href='#' @click.prevent='newPaymentIDs.push(member.id)'>Novo</a></div>
+                    <div v-else>
+                        Cijena <input type='text' v-model='newPaymentInputs[member.id].value' maxlength='3'><br>
+                        Vrijedi od <input type='date' v-model='newPaymentInputs[member.id].valid_from'><br>
+                        Vrijedi do <input type='date' v-model='newPaymentInputs[member.id].valid_until'><br>
+                        <a href='#' @click.prevent='newPaymentIDs.splice(newPaymentIDs.indexOf(member.id), 1)'>Odustani</a>
+                        <button @click.prevent='addNewPayment(member)'>Dodaj</button>
+                    </div>
                     <table>
                         <tr>
                             <th>Cijena</th>
@@ -36,7 +45,6 @@
             <div v-for='member in searchedInactive' class='member-block inactive'>
                 <div class='main' @click='toggleInfo(member.id)'>
                     {{ member.name }}
-                    <small>( {{ getLatestValidUntil(member) | moment }} ) ( {{ getDaysDifference(member) }} )</small>
                 </div>
                 <div class='info' :class='showInfo(member.id)'>
                     Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
@@ -78,7 +86,9 @@
                 },
                 searchQuery: '',
                 toggleIDs: [],
-                paymentsIDs: []
+                paymentsIDs: [],
+                newPaymentIDs: [],
+                newPaymentInputs: []
             }
         },
         props: ['data'],
@@ -88,6 +98,13 @@
                     let dda = this.getDaysDifference(a)
                     let ddb = this.getDaysDifference(b)
                     return dda - ddb
+                })
+            },
+            sortedInactive() {
+                return this.members.inactive.sort((a, b) => {
+                    if(a.name < b.name) return -1
+                    if(a.name > b.name) return 1
+                    return 0
                 })
             },
             searchedActive() {
@@ -102,9 +119,9 @@
             searchedInactive() {
                 let searchRegex = new RegExp(this.searchQuery, 'i')
                 if(this.searchQuery == '') {
-                    return this.members.inactive
+                    return this.sortedInactive
                 }
-                return this.members.inactive.filter((member) => {
+                return this.sortedInactive.filter((member) => {
                     return searchRegex.test(member.name)
                 })
             }
@@ -122,12 +139,14 @@
                 return date.diff(moment().startOf('day'), 'days')
             },
             getLatestValidUntil(member) {
+                if(!member.payments.length) return moment(member.joined_at).startOf('day')
                 return moment(member.payments[0].valid_until)
             },
             toggleInfo(id) {
                 if(this.toggleIDs.indexOf(id) > -1) {
                     this.toggleIDs.splice(this.toggleIDs.indexOf(id), 1)
                     this.paymentsIDs.splice(this.paymentsIDs.indexOf(id), 1)
+                    this.newPaymentIDs.splice(this.newPaymentIDs.indexOf(id), 1)
                     return
                 }
                 this.toggleIDs.push(id)
@@ -139,6 +158,7 @@
             togglePayments(id) {
                 if(this.paymentsIDs.indexOf(id) > -1) {
                     this.paymentsIDs.splice(this.paymentsIDs.indexOf(id), 1)
+                    this.newPaymentIDs.splice(this.newPaymentIDs.indexOf(id), 1)
                     return
                 }
                 this.paymentsIDs.push(id)
@@ -146,12 +166,39 @@
             showPayments(id) {
                 if(this.paymentsIDs.indexOf(id) < 0) return ''
                 else return 'payments-showing'
+            },
+            setUpInputModelsForEachMember(members) {
+                for(let i = 0; i < (members.length - 1); i++) {
+                    this.newPaymentInputs[members[i].id] = {
+                        value: this.membership_monthly,
+                        valid_from: this.getLatestValidUntil(members[i]).format('YYYY-MM-DD'),
+                        valid_until: this.getLatestValidUntil(members[i]).add(1, 'M').format('YYYY-MM-DD')
+                    }
+                }
+            },
+            addNewPayment(member) {
+                axios.post('/clanovi/'+member.id+'/placanja', {
+                    value: this.newPaymentInputs[member.id].value,
+                    valid_from: this.newPaymentInputs[member.id].valid_from,
+                    valid_until: this.newPaymentInputs[member.id].valid_until
+                }).then((response) => {
+                    member.payments.unshift(response.data.data)
+                    this.newPaymentIDs.splice(this.newPaymentIDs.indexOf(member.id), 1)
+                    this.newPaymentInputs[member.id].valid_from = this.getLatestValidUntil(member).format('YYYY-MM-DD')
+                    this.newPaymentInputs[member.id].valid_until = this.getLatestValidUntil(member).add(1, 'M').format('YYYY-MM-DD')
+                }).catch((err) => {
+                    alert('Something went wrong! Try again.')
+                })
             }
         },
         filters: {
             moment(val) {
                 return moment(val).format('DD.MM.YYYY.')
             }
+        },
+        mounted() {
+            this.setUpInputModelsForEachMember(this.members.active)
+            this.setUpInputModelsForEachMember(this.members.inactive)
         }
     }
 </script>
