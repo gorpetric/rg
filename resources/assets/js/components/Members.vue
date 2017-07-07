@@ -12,7 +12,8 @@
                 <div class='info' :class='showInfo(member.id)'>
                     Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
                     Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
-                    Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong>
+                    Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
+                    <a :href='"/clanovi/"+member.id+"/uredi"'>Uredi</a>
                     <br><br>
                     <a href='#' @click.prevent='togglePayments(member.id)'>Prikaži plaćanja</a>
                 </div>
@@ -49,7 +50,8 @@
                 <div class='info' :class='showInfo(member.id)'>
                     Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
                     Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
-                    Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong>
+                    Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
+                    <a :href='"/clanovi/"+member.id+"/uredi"'>Uredi</a>
                     <br><br>
                     <a href='#' @click.prevent='togglePayments(member.id)'>Prikaži plaćanja</a>
                 </div>

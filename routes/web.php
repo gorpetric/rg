@@ -22,7 +22,9 @@ Route::group([
     'prefix' => 'clanovi',
 ], function() {
     Route::get('', 'MembersController@index')->name('members.index');
+    Route::post('{member}/placanja', 'MembersController@postNewPayment');
+    Route::get('{member}/uredi', 'MembersController@getEditMember')->name('members.edit');
+    Route::post('{member}/uredi', 'MembersController@postEditMember');
     Route::get('novi', 'MembersController@getNewMember')->name('members.new');
     Route::post('novi', 'MembersController@postNewMember');
-    Route::post('{member}/placanja', 'MembersController@postNewPayment');
 });

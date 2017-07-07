@@ -55,6 +55,31 @@ class MembersController extends Controller
         return redirect()->route('members.index');
     }
 
+    public function getEditMember(Member $member)
+    {
+        return view('members.edit', compact('member'));
+    }
+
+    public function postEditMember(Request $request, Member $member)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'address' => 'max:250',
+            'phone' => 'max:50',
+        ]);
+
+        dd($request->all(), $member, $member->joined_at);
+
+        $member->update([
+            'name' => $request->name,
+            'address' => $request->address ?: null,
+            'phone' => $request->phone ?: null,
+            'active' => $request->active ? 1 : 0,
+        ]);
+
+        return redirect()->route('members.index');
+    }
+
     public function postNewPayment(Request $request, Member $member)
     {
         $this->validate($request, [
