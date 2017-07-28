@@ -1,9 +1,13 @@
+import store from './vuex'
+
 require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.component('members', require('./components/Members.vue'));
+require('./components')
+//Vue.component('members', require('./components/Members.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store: store
 });

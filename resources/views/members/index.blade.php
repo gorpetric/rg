@@ -6,6 +6,6 @@
 @section('content')
 <div class='container'>
     <h1>Članovi</h1>
-    <members :data='{{ $data }}'></members>
+    <members></members>
 </div>
 @stop
