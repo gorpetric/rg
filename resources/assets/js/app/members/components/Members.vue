@@ -5,11 +5,11 @@
         <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu'>
         <div class='active'>
             <h2>Aktivni</h2>
-            <member v-for='member in members.active' :key='member.id' :member='member'></member>
+            <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
         </div>
         <div class='inactive'>
             <h2>Neaktivni</h2>
-            <member v-for='member in members.inactive' :key='member.id' :member='member'></member>
+            <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
         </div>
     </section>
 </template>
@@ -28,11 +28,11 @@
             ...mapGetters({
                 loading: 'members/loading',
                 members: 'members/members'
-            }),/*
+            }),
             sortedActive() {
                 return this.members.active.sort((a, b) => {
-                    let dda = a.payments[0].valid_until
-                    let ddb = b.payments[0].valid_until
+                    let dda = this.getDaysDifference(a)
+                    let ddb = this.getDaysDifference(b)
                     return dda - ddb
                 })
             },
@@ -60,12 +60,20 @@
                 return this.sortedInactive.filter((member) => {
                     return searchRegex.test(member.name)
                 })
-            }*/
+            }
         },
         methods: {
             ...mapActions({
                 getData: 'members/getData'
-            })
+            }),
+            getDaysDifference(member) {
+                let date = this.getLatestValidUntil(member)
+                return date.diff(moment().startOf('day'), 'days')
+            },
+            getLatestValidUntil(member) {
+                if(!member.payments.length) return moment(member.joined_at).startOf('day')
+                return moment(member.payments[0].valid_until)
+            }
         },
         mounted() {
             this.getData()
