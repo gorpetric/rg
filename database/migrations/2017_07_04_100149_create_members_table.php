@@ -19,6 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('name');
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            $table->enum('sex', ['M', 'F'])->nullable()->default('M');
             $table->boolean('active')->default(0);
             $table->timestamp('joined_at')->nullable()->default(NULL);
             $table->timestamps();

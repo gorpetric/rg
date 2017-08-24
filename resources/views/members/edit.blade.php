@@ -11,16 +11,29 @@
     </p>
     <h1><small>Uređivanje člana: </small>{{ $member->name }}</h1>
     <form action='{{ route("members.edit", $member) }}' method='POST' autocomplete='off'>
-        <label for='name'>* Ime</label>
-        <input type='text' name='name' id='name' value='{{ Request::old("name") ?: $member->name }}'><br>
-        <label for='address'>Adresa</label>
-        <input type='text' name='address' id='address' value='{{ Request::old("address") ?: $member->address }}'><br>
-        <label for='phone'>Kontakt broj</label>
-        <input type='text' name='phone' id='phone' value='{{ Request::old("phone") ?: $member->phone }}'><br>
-        <label for='active'>Član je aktivan</label>
-        <input type='checkbox' name='active' id='active' {{ $member->active ? "checked='checked'" : '' }}><br>
+        <div class='form-group'>
+            <input type='text' name='name' id='name' value='{{ Request::old("name") ?: $member->name }}'>
+            <label for='name'>* Ime</label>
+        </div>
+        <div class='form-group'>
+            <input type='text' name='address' id='address' value='{{ Request::old("address") ?: $member->address }}'>
+            <label for='address'>Adresa</label>
+        </div>
+        <div class='form-group'>
+            <input type='text' name='phone' id='phone' value='{{ Request::old("phone") ?: $member->phone }}'>
+            <label for='phone'>Kontakt broj</label>
+        </div>
+        <div class='form-group2'>
+            <span>Spol</span>&nbsp;
+            <input type='radio' name='sex' id='sex-m' value='M' {{ $member->sex == 'M' ? "checked='checked'" : '' }}><label for='sex-m'>Muško</label>&nbsp;
+            <input type='radio' name='sex' id='sex-f' value='F' {{ $member->sex == 'F' ? "checked='checked'" : '' }}><label for='sex-f'>Žensko</label>
+        </div>
+        <div class='form-group2'>
+            <label for='active'>Član je aktivan</label>
+            <input type='checkbox' name='active' id='active' {{ $member->active ? "checked='checked'" : '' }}>
+        </div>
         {{ csrf_field() }}
-        <input type='submit' value='Uredi'>
+        <input class='form-btn' type='submit' value='Uredi'>
     </form>
     @include('partials._errors')
 </div>

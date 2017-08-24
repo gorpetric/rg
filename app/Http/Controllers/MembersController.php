@@ -48,6 +48,7 @@ class MembersController extends Controller
             'name' => 'required|max:50',
             'address' => 'max:250',
             'phone' => 'max:50',
+            'sex' => 'required|in:M,F',
             'joined_at' => 'required|date',
         ]);
 
@@ -55,6 +56,7 @@ class MembersController extends Controller
             'name' => $request->name,
             'address' => $request->address ?: null,
             'phone' => $request->phone ?: null,
+            'sex' => $request->sex,
             'joined_at' => $request->joined_at,
             'active' => $request->active ? 1 : 0,
         ]);
@@ -73,12 +75,14 @@ class MembersController extends Controller
             'name' => 'required|max:50',
             'address' => 'max:250',
             'phone' => 'max:50',
+            'sex' => 'required|in:M,F',
         ]);
 
         $member->update([
             'name' => $request->name,
             'address' => $request->address ?: null,
             'phone' => $request->phone ?: null,
+            'sex' => $request->sex,
             'active' => $request->active ? 1 : 0,
         ]);
 

@@ -19,13 +19,13 @@ Route::get('/logout', 'HomeController@logout')->name('logout')->middleware('auth
 
 Route::group([
     'middleware' => ['role:boss'],
-    'prefix' => 'clanovi',
+    'prefix' => 'members',
 ], function() {
     Route::get('', 'MembersController@index')->name('members.index');
-    Route::get('podaci', 'MembersController@getData');
-    Route::post('{member}/placanja', 'MembersController@postNewPayment');
-    Route::get('{member}/uredi', 'MembersController@getEditMember')->name('members.edit');
-    Route::post('{member}/uredi', 'MembersController@postEditMember');
-    Route::get('novi', 'MembersController@getNewMember')->name('members.new');
-    Route::post('novi', 'MembersController@postNewMember');
+    Route::get('data', 'MembersController@getData');
+    Route::post('{member}/payments', 'MembersController@postNewPayment');
+    Route::get('{member}/edit', 'MembersController@getEditMember')->name('members.edit');
+    Route::post('{member}/edit', 'MembersController@postEditMember');
+    Route::get('new', 'MembersController@getNewMember')->name('members.new');
+    Route::post('new', 'MembersController@postNewMember');
 });

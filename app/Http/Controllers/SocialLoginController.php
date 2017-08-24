@@ -17,10 +17,10 @@ class SocialLoginController extends Controller
 
     public function redirect($service, Request $request)
     {
-        // $user = User::find(1);
-        // Auth::login($user, false);
-        // return redirect()->route('home');
-        return Socialite::driver($service)->redirect();
+        $user = User::find(1);
+        Auth::login($user, false);
+        return redirect()->route('home');
+        // return Socialite::driver($service)->redirect();
     }
 
     public function callback($service, Request $request)

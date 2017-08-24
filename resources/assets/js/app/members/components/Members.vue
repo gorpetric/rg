@@ -1,8 +1,9 @@
 <template>
     <i v-if='loading' class='fa fa-spinner'></i>
     <section id='members' v-else>
-        <p><a href='/clanovi/novi'>Novi član</a></p>
-        <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu'>
+        <p>Ukupno članova: {{ members.active.length + members.inactive.length }} (aktivni: {{ members.active.length }}, neaktivni: {{ members.inactive.length }})</p>
+        <p><a href='/members/new'>Novi član</a></p>
+        <input type='text' v-model='searchQuery' placeholder='Petraži po imenu' style='width:auto'>
         <div class='active'>
             <h2>Aktivni</h2>
             <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
@@ -82,10 +83,6 @@
 </script>
 
 <style scoped>
-input[type='text'] {
-    max-width: 100%;
-    padding: 5px;
-}
 @keyframes spin {
     from { transform: rotate(0deg) }
     to { transform: rotate(360deg) }

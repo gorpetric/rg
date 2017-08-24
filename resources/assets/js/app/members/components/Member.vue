@@ -8,18 +8,18 @@
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
             Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
             Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
-            <a :href='"/clanovi/"+member.id+"/uredi"'>Uredi</a>
+            <a :href='"/members/"+member.id+"/edit"'>Uredi</a>
             <br><br>
             <a href='#' @click.prevent='togglePayments'>Prikaži plaćanja</a>
         </div>
         <div class='payments' :class='showPayments()'>
-            <div v-if='!toggleNewPayment'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo</a></div>
-            <div v-else>
-                Cijena <input type='text' v-model='newPaymentInputs.value' maxlength='3'><br>
-                Vrijedi od <input type='date' v-model='newPaymentInputs.valid_from'><br>
-                Vrijedi do <input type='date' v-model='newPaymentInputs.valid_until'><br>
-                <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>
-                <button @click.prevent='addNewPayment()'>Dodaj</button>
+            <div v-if='!toggleNewPayment' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo</a></div>
+            <div v-else style='margin-bottom:10px'>
+                Cijena <input type='text' style='width:auto' v-model='newPaymentInputs.value' maxlength='3'><br><br>
+                Vrijedi od <input type='date' v-model='newPaymentInputs.valid_from'><br><br>
+                Vrijedi do <input type='date' v-model='newPaymentInputs.valid_until'><br><br>
+                <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>&nbsp;
+                <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
             </div>
             <table>
                 <tr>
@@ -109,7 +109,7 @@
                 this.newPaymentInputs.valid_until = this.getLatestValidUntil().add(1, 'M').format('YYYY-MM-DD')
             },
             addNewPayment() {
-                axios.post('/clanovi/'+this.member.id+'/placanja', {
+                axios.post('/members/'+this.member.id+'/payments', {
                     value: this.newPaymentInputs.value,
                     valid_from: this.newPaymentInputs.valid_from,
                     valid_until: this.newPaymentInputs.valid_until
