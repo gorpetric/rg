@@ -29,3 +29,10 @@ Route::group([
     Route::get('new', 'MembersController@getNewMember')->name('members.new');
     Route::post('new', 'MembersController@postNewMember');
 });
+
+Route::group([
+    'middleware' => ['role:admin'],
+    'prefix' => 'admin',
+], function() {
+    Route::get('', 'AdminController@index')->name('admin.index');
+});

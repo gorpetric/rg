@@ -6,6 +6,12 @@
 <div class='barbell'></div>
 <div class='container'>
     <h1>Royal Gym</h1>
-    <p><a href='{{ route("members.index") }}'>Članovi</a></p>
+    <p>Web u izradi</p>
+    @if(Auth::user()->hasAnyRole(['admin', 'boss']))
+        <p><a href='{{ route("members.index") }}'>Članovi</a></p>
+    @endif
+    @if(Auth::user()->hasRole('admin'))
+        <p><a href='{{ route("admin.index") }}'>Admin</a></p>
+    @endif
 </div>
 @stop
