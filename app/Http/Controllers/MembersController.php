@@ -101,6 +101,7 @@ class MembersController extends Controller
             'value' => $request->value,
             'valid_from' => $request->valid_from,
             'valid_until' => $request->valid_until,
+            'description' => $request->description,
         ]);
 
         return response()->json([

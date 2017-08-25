@@ -10,30 +10,37 @@
             Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
             <a :href='"/members/"+member.id+"/edit"'>Uredi</a>
             <br><br>
-            <a href='#' @click.prevent='togglePayments'>Prikaži plaćanja</a>
+            <a href='#' @click.prevent='paymentsShowing = 1'>Prikaži plaćanja</a>
         </div>
-        <div class='payments' :class='showPayments()'>
-            <div v-if='!toggleNewPayment' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo</a></div>
-            <div v-else style='margin-bottom:10px'>
-                Cijena <input type='text' style='width:auto' v-model='newPaymentInputs.value' maxlength='3'><br><br>
-                Vrijedi od <input type='date' v-model='newPaymentInputs.valid_from'><br><br>
-                Vrijedi do <input type='date' v-model='newPaymentInputs.valid_until'><br><br>
-                <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>&nbsp;
-                <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
+        <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
+            <span slot='header'>{{ member.name }} - plaćanja ( {{ getDaysDifference(member) }} )</span>
+            <div slot='body'>
+                <div v-if='!toggleNewPayment' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo plaćanje</a><hr></div>
+                <div v-else style='margin-bottom:10px'>
+                    *Cijena <input type='text' style='width:auto' v-model='newPaymentInputs.value' maxlength='3'><br><br>
+                    *Vrijedi od <input type='date' v-model='newPaymentInputs.valid_from'><br><br>
+                    *Vrijedi do <input type='date' v-model='newPaymentInputs.valid_until'><br><br>
+                    Napomena <input type='text' v-model='newPaymentInputs.description' placeholder='Opcionalno...'><br><br>
+                    <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>&nbsp;
+                    <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
+                    <hr>
+                </div>
+                <table>
+                    <tr>
+                        <th>Cijena</th>
+                        <th>Vrijedi od</th>
+                        <th>Vrijedi do</th>
+                        <th>Napomena</th>
+                    </tr>
+                    <tr v-for='payment in member.payments'>
+                        <td>{{ payment.value }}</td>
+                        <td>{{ payment.valid_from | moment }}</td>
+                        <td>{{ payment.valid_until | moment }}</td>
+                        <td>{{ payment.description }}</td>
+                    </tr>
+                </table>
             </div>
-            <table>
-                <tr>
-                    <th>Cijena</th>
-                    <th>Vrijedi od</th>
-                    <th>Vrijedi do</th>
-                </tr>
-                <tr v-for='payment in member.payments'>
-                    <td>{{ payment.value }}</td>
-                    <td>{{ payment.valid_from | moment }}</td>
-                    <td>{{ payment.valid_until | moment }}</td>
-                </tr>
-            </table>
-        </div>
+        </modal>
     </div>
 </template>
 
@@ -50,7 +57,8 @@
                 newPaymentInputs: {
                     value: 100,
                     valid_from: null,
-                    valid_until: null
+                    valid_until: null,
+                    description: null
                 }
             }
         },
@@ -87,32 +95,22 @@
                 }
                 this.toggled = 1
             },
-            togglePayments() {
-                if(this.paymentsShowing) {
-                    this.toggleNewPayment = 0
-                    this.paymentsShowing = 0
-                    return
-                }
-                this.paymentsShowing = 1
-            },
             showInfo() {
                 if(!this.toggled) return ''
                 return 'info-showing'
-            },
-            showPayments() {
-                if(!this.paymentsShowing) return ''
-                return 'payments-showing'
             },
             setUpNewPaymentInputs() {
                 this.newPaymentInputs.value = this.membership_monthly
                 this.newPaymentInputs.valid_from = this.getLatestValidUntil().format('YYYY-MM-DD')
                 this.newPaymentInputs.valid_until = this.getLatestValidUntil().add(1, 'M').format('YYYY-MM-DD')
+                this.newPaymentInputs.description = null
             },
             addNewPayment() {
                 axios.post('/members/'+this.member.id+'/payments', {
                     value: this.newPaymentInputs.value,
                     valid_from: this.newPaymentInputs.valid_from,
-                    valid_until: this.newPaymentInputs.valid_until
+                    valid_until: this.newPaymentInputs.valid_until,
+                    description: this.newPaymentInputs.description
                 }).then((response) => {
                     this.member.payments.unshift(response.data.data)
                     this.toggleNewPayment = 0
@@ -143,13 +141,13 @@
     padding: 10px;
     cursor: pointer;
 }
-.info, .payments {
+.info {
     font-size: 16px;
     padding: 10px;
     border-top: 1px solid lightgray;
     display: none;
 }
-.info-showing, .payments-showing {
+.info-showing {
     display: block
 }
 .danger {
