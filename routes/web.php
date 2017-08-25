@@ -35,4 +35,5 @@ Route::group([
     'prefix' => 'admin',
 ], function() {
     Route::get('', 'AdminController@index')->name('admin.index');
+    Route::post('/users/{user}/sync-roles', 'AdminController@syncUserRoles')->name('admin.users.syncRoles');
 });

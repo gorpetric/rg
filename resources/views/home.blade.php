@@ -7,11 +7,11 @@
 <div class='container'>
     <h1>Royal Gym</h1>
     <p>Web u izradi</p>
-    @if(Auth::user()->hasAnyRole(['admin', 'boss']))
+    @hasanyrole('admin|boss')
         <p><a href='{{ route("members.index") }}'>Članovi</a></p>
-    @endif
-    @if(Auth::user()->hasRole('admin'))
+    @endhasanyrole
+    @role('admin')
         <p><a href='{{ route("admin.index") }}'>Admin</a></p>
-    @endif
+    @endrole
 </div>
 @stop
