@@ -2,7 +2,7 @@
     <div class='member-block' :class='determineColor()'>
         <div class='main' @click.prevent='toggleInfo'>
             {{ member.name }}
-            <small v-if='member.active'>( {{ getLatestValidUntil(member) | moment }} ) ( {{ getDaysDifference(member) }} )</small>
+            <small v-if='member.active'>( {{ getLatestValidUntil() | moment }} ) ( {{ getDaysDifference() }} )</small>
         </div>
         <div class='info' :class='showInfo()'>
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
@@ -13,7 +13,7 @@
             <a href='#' @click.prevent='paymentsShowing = 1'>Prikaži plaćanja</a>
         </div>
         <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
-            <span slot='header'>{{ member.name }} - plaćanja ( {{ getDaysDifference(member) }} )</span>
+            <span slot='header'>{{ member.name }} - plaćanja ( {{ getDaysDifference() }} )</span>
             <div slot='body'>
                 <div v-if='!toggleNewPayment' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo plaćanje</a><hr></div>
                 <div v-else style='margin-bottom:10px'>
@@ -25,20 +25,12 @@
                     <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
                     <hr>
                 </div>
-                <table>
-                    <tr>
-                        <th>Cijena</th>
-                        <th>Vrijedi od</th>
-                        <th>Vrijedi do</th>
-                        <th>Napomena</th>
-                    </tr>
-                    <tr v-for='payment in member.payments'>
-                        <td>{{ payment.value }}</td>
-                        <td>{{ payment.valid_from | moment }}</td>
-                        <td>{{ payment.valid_until | moment }}</td>
-                        <td>{{ payment.description }}</td>
-                    </tr>
-                </table>
+                <div v-for='payment in member.payments' class='memberPayment'>
+                    Cijena: <strong>{{ payment.value }}</strong><br>
+                    Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
+                    Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
+                    <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
+                </div>
             </div>
         </modal>
     </div>
@@ -65,7 +57,8 @@
         props: ['member'],
         computed: {
             ...mapGetters({
-                membership_monthly: 'members/membership_monthly'
+                membership_monthly: 'members/membership_monthly',
+                membership_daily: 'members/membership_daily'
             })
         },
         methods: {
@@ -100,7 +93,7 @@
                 return 'info-showing'
             },
             setUpNewPaymentInputs() {
-                this.newPaymentInputs.value = this.membership_monthly
+                this.newPaymentInputs.value = this.member.active ? this.membership_monthly : this.membership_daily
                 this.newPaymentInputs.valid_from = this.getLatestValidUntil().format('YYYY-MM-DD')
                 this.newPaymentInputs.valid_until = this.getLatestValidUntil().add(1, 'M').format('YYYY-MM-DD')
                 this.newPaymentInputs.description = null
@@ -161,5 +154,12 @@
 }
 .inactive {
     border-color: gray;
+}
+.memberPayment{
+    padding: 10px 0;
+    border-bottom: 1px solid lightgray;
+}
+.memberPayment:nth-child(odd) {
+    background: #f5f5f5;
 }
 </style>
