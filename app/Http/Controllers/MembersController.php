@@ -76,6 +76,7 @@ class MembersController extends Controller
             'address' => 'max:250',
             'phone' => 'max:50',
             'sex' => 'required|in:M,F',
+            'joined_at' => 'required|date',
         ]);
 
         $member->update([
@@ -84,6 +85,7 @@ class MembersController extends Controller
             'phone' => $request->phone ?: null,
             'sex' => $request->sex,
             'active' => $request->active ? 1 : 0,
+            'joined_at' => $request->joined_at,
         ]);
 
         return redirect()->route('members.index');

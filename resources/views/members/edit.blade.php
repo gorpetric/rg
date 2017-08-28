@@ -29,6 +29,10 @@
             <input type='radio' name='sex' id='sex-f' value='F' {{ $member->sex == 'F' ? "checked='checked'" : '' }}><label for='sex-f'>Žensko</label>
         </div>
         <div class='form-group2'>
+            <label for='joined_at'>* Pridružio se</label>
+            <input type='date' name='joined_at' id='joined_at' value='{{ Request::old("joined_at") ?: $member->joined_at->format("Y-m-d") }}'>
+        </div>
+        <div class='form-group2'>
             <label for='active'>Član je aktivan</label>
             <input type='checkbox' name='active' id='active' {{ $member->active ? "checked='checked'" : '' }}>
         </div>
