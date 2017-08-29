@@ -127,7 +127,7 @@
 
 <style scoped>
 .member-block {
-    border: 1px solid black;
+    border: 2px solid black;
     margin: 10px 0;
 }
 .main {
