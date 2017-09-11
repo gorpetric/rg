@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+    'password' => 'Passwords mora sadržavati minimalno 6 znakova i mora odgovarati polju konfirmacije',
+    'reset' => 'Vaš password je resetiran!',
+    'sent' => 'Password reset link Vam je poslan na Vaš email!',
+    'token' => 'Password reset token je nevažeći.',
+    'user' => "Korisnik s ovom e-mail adresom nije pronađen.",
 
 ];
