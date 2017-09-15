@@ -36,4 +36,11 @@ Route::group([
 ], function() {
     Route::get('', 'AdminController@index')->name('admin.index');
     Route::post('/users/{user}/sync-roles', 'AdminController@syncUserRoles')->name('admin.users.syncRoles');
+
+    Route::group(['prefix' => 'backup'], function() {
+        Route::get('', 'BackupController@index')->name('admin.backup.index');
+        Route::get('create', 'BackupController@create')->name('admin.backup.create');
+        Route::get('{backup}/download', 'BackupController@download')->name('admin.backup.download');
+        Route::get('{backup}/delete', 'BackupController@delete')->name('admin.backup.delete');
+    });
 });
