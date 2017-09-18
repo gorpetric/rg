@@ -157,7 +157,6 @@
 }
 .memberPayment{
     padding: 10px 0;
-    border-bottom: 1px solid lightgray;
 }
 .memberPayment:nth-child(odd) {
     background: #f5f5f5;
