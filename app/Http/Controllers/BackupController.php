@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Artisan;
 use Storage;
+use Exception;
 use Illuminate\Http\Request;
 
 class BackupController extends Controller
 {
     public function index()
     {
-        // https://laracasts.com/discuss/channels/laravel/how-to-backup-mysql-database
         $disk = Storage::disk('local');
         $files = $disk->files(config('backup.backup.name'));
         $backups = [];
@@ -33,23 +33,46 @@ class BackupController extends Controller
 
     public function create()
     {
-        return redirect()->route('admin.backup.index');
+        try {
+            Artisan::call('backup:run', ['--only-db' => true]);
+            // $output = Artisan::output();
+            return redirect()->back();
+        } catch (Exception $e) {
+            return redirect()->back();
+        }
     }
 
     public function download($backup_name)
     {
-        dd($backup_name);
+        $backup = config('backup.backup.name') . '/' . $backup_name;
+        $disk = Storage::disk('local');
+
+        if(!$disk->exists($backup)) {
+            abort(404);
+        }
+
+        $fs = $disk->getDriver();
+        $stream = $fs->readStream($backup);
+
+        return response()->stream(function() use ($stream) {
+            fpassthru($stream);
+        }, 200, [
+            'Content-Type' => $fs->getMimetype($backup),
+            'Content-Length' => $fs->getSize($backup),
+            'Content-disposition' => "attachment; filename=\"" . basename($backup) . "\"",
+        ]);
     }
 
     public function delete($backup_name)
     {
+        $backup = config('backup.backup.name') . '/' . $backup_name;
         $disk = Storage::disk('local');
 
-        if(!$disk->exists(config('backup.backup.name') . '/' . $backup_name)) {
+        if(!$disk->exists($backup)) {
             abort(404);
         }
 
-        $disk->delete(config('backup.backup.name') . '/' . $backup_name);
+        $disk->delete($backup);
         return redirect()->back();
     }
 }
