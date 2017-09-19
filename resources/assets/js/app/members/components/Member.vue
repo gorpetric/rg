@@ -25,6 +25,7 @@
                     <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
                     <hr>
                 </div>
+                <p>Ukupno: {{ getPaymentsTotal() }} kn</p>
                 <div v-for='payment in member.payments' class='memberPayment'>
                     Cijena: <strong>{{ payment.value }}</strong><br>
                     Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
@@ -77,7 +78,14 @@
             },
             getLatestValidUntil() {
                 if(!this.member.payments.length) return moment(this.member.joined_at).startOf('day')
-                return moment(this.member.payments[0].valid_until)
+                return moment(this.member.payments[0].valid_until).startOf('day')
+            },
+            getPaymentsTotal() {
+                let total = 0
+                this.member.payments.forEach((payment) => {
+                    total += +payment.value
+                })
+                return total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
             },
             toggleInfo() {
                 if(this.toggled) {
