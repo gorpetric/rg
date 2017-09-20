@@ -8,7 +8,7 @@
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
             Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
             Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
-            <a :href='"/members/"+member.id+"/edit"'>Uredi</a>
+            <a :href='"/members/"+member.id+"/edit"' @click.prevent='editMemberShowing = 1'>Uredi</a>
             <br><br>
             <a href='#' @click.prevent='paymentsShowing = 1'>Prikaži plaćanja</a>
         </div>
@@ -34,6 +34,12 @@
                 </div>
             </div>
         </modal>
+        <modal v-if='editMemberShowing' @close='editMemberShowing = 0'>
+            <span slot='header'>Uredi član: {{ member.name }}</span>
+            <div slot='body'>
+                <new-or-edit-member :member='member'></new-or-edit-member>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -46,6 +52,7 @@
             return {
                 toggled: 0,
                 paymentsShowing: 0,
+                editMemberShowing: 0,
                 toggleNewPayment: 0,
                 newPaymentInputs: {
                     value: 100,

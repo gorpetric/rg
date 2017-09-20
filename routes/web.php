@@ -24,9 +24,7 @@ Route::group([
     Route::get('', 'MembersController@index')->name('members.index');
     Route::get('data', 'MembersController@getData');
     Route::post('{member}/payments', 'MembersController@postNewPayment');
-    Route::get('{member}/edit', 'MembersController@getEditMember')->name('members.edit');
     Route::post('{member}/edit', 'MembersController@postEditMember');
-    Route::get('new', 'MembersController@getNewMember')->name('members.new');
     Route::post('new', 'MembersController@postNewMember');
 });
 

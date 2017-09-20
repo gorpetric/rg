@@ -4,3 +4,11 @@ export const getData = ({ commit, dispatch }) => {
         commit('toggleLoading')
     })
 }
+
+export const addNewMember = ({commit, dispatch}, newMember) => {
+    commit('addNewMember', newMember)
+}
+
+export const editMemberData = ({commit, dispatch}, data) => {
+    commit('editMember', data)
+}

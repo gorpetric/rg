@@ -37,11 +37,6 @@ class MembersController extends Controller
         ]);
     }
 
-    public function getNewMember()
-    {
-        return view('members.new');
-    }
-
     public function postNewMember(Request $request)
     {
         $this->validate($request, [
@@ -52,7 +47,7 @@ class MembersController extends Controller
             'joined_at' => 'required|date',
         ]);
 
-        Member::create([
+        $member = Member::create([
             'name' => $request->name,
             'address' => $request->address ?: null,
             'phone' => $request->phone ?: null,
@@ -61,12 +56,9 @@ class MembersController extends Controller
             'active' => $request->active ? 1 : 0,
         ]);
 
-        return redirect()->route('members.index');
-    }
-
-    public function getEditMember(Member $member)
-    {
-        return view('members.edit', compact('member'));
+        return response()->json([
+            'data' => $member,
+        ]);
     }
 
     public function postEditMember(Request $request, Member $member)
@@ -88,7 +80,9 @@ class MembersController extends Controller
             'joined_at' => $request->joined_at,
         ]);
 
-        return redirect()->route('members.index');
+        return response()->json([
+            'data' => $member,
+        ]);
     }
 
     public function postNewPayment(Request $request, Member $member)

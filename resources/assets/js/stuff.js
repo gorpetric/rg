@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // keep label up if input has value
-    let inputs = document.querySelectorAll('.form-group input')
+    let inputs = document.querySelectorAll('.form-group-pretty input')
     if(inputs.length) {
         for(let i = 0; i < inputs.length; i++) {
             if(inputs[i].value !== '') {

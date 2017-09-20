@@ -2,7 +2,7 @@
     <i v-if='loading' class='fa fa-spinner'></i>
     <section id='members' v-else>
         <p>Ukupno članova: {{ members.active.length + members.inactive.length }} (aktivni: {{ members.active.length }}, neaktivni: {{ members.inactive.length }})</p>
-        <p><a href='/members/new'>Novi član</a></p>
+        <p><a href='/members/new' @click.prevent='newMemberShowing = 1'>Novi član</a></p>
         <input type='text' v-model='searchQuery' placeholder='Petraži po imenu' style='width:auto'>
         <div class='active'>
             <h2>Aktivni</h2>
@@ -12,6 +12,12 @@
             <h2>Neaktivni</h2>
             <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
         </div>
+        <modal v-if='newMemberShowing' @close='newMemberShowing = 0'>
+            <span slot='header'>Novi član</span>
+            <div slot='body'>
+                <new-or-edit-member></new-or-edit-member>
+            </div>
+        </modal>
     </section>
 </template>
 
@@ -22,7 +28,8 @@
     export default {
         data() {
             return {
-                searchQuery: ''
+                searchQuery: '',
+                newMemberShowing: 0
             }
         },
         computed: {
@@ -73,7 +80,7 @@
             },
             getLatestValidUntil(member) {
                 if(!member.payments.length) return moment(member.joined_at).startOf('day')
-                return moment(member.payments[0].valid_until)
+                return moment(member.payments[0].valid_until).startOf('day')
             }
         },
         mounted() {
