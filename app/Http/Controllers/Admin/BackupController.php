@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Artisan;
 use Storage;
 use Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BackupController extends Controller
 {

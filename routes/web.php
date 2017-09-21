@@ -21,25 +21,25 @@ Route::group([
     'middleware' => ['role:boss'],
     'prefix' => 'members',
 ], function() {
-    Route::get('', 'MembersController@index')->name('members.index');
-    Route::get('data', 'MembersController@getData');
-    Route::post('{member}/payments', 'MembersController@postNewPayment');
-    Route::post('{member}/edit', 'MembersController@postEditMember');
-    Route::post('new', 'MembersController@postNewMember');
-    Route::get('stats/monthly', 'MembersController@getMonthlyStats');
+    Route::get('', 'Members\MembersController@index')->name('members.index');
+    Route::get('data', 'Members\MembersController@getData');
+    Route::post('{member}/payments', 'Members\MemberPaymentsController@postNewPayment');
+    Route::post('{member}/edit', 'Members\MembersController@postEditMember');
+    Route::post('new', 'Members\MembersController@postNewMember');
+    Route::get('stats/monthly', 'Members\MemberPaymentsController@getMonthlyStats');
 });
 
 Route::group([
     'middleware' => ['role:admin'],
     'prefix' => 'admin',
 ], function() {
-    Route::get('', 'AdminController@index')->name('admin.index');
-    Route::post('/users/{user}/sync-roles', 'AdminController@syncUserRoles')->name('admin.users.syncRoles');
+    Route::get('', 'Admin\AdminController@index')->name('admin.index');
+    Route::post('/users/{user}/sync-roles', 'Admin\AdminController@syncUserRoles')->name('admin.users.syncRoles');
 
     Route::group(['prefix' => 'backup'], function() {
-        Route::get('', 'BackupController@index')->name('admin.backup.index');
-        Route::get('create', 'BackupController@create')->name('admin.backup.create');
-        Route::get('{backup}/download', 'BackupController@download')->name('admin.backup.download');
-        Route::get('{backup}/delete', 'BackupController@delete')->name('admin.backup.delete');
+        Route::get('', 'Admin\BackupController@index')->name('admin.backup.index');
+        Route::get('create', 'Admin\BackupController@create')->name('admin.backup.create');
+        Route::get('{backup}/download', 'Admin\BackupController@download')->name('admin.backup.download');
+        Route::get('{backup}/delete', 'Admin\BackupController@delete')->name('admin.backup.delete');
     });
 });
