@@ -26,6 +26,7 @@ Route::group([
     Route::post('{member}/payments', 'MembersController@postNewPayment');
     Route::post('{member}/edit', 'MembersController@postEditMember');
     Route::post('new', 'MembersController@postNewMember');
+    Route::get('stats/monthly', 'MembersController@getMonthlyStats');
 });
 
 Route::group([

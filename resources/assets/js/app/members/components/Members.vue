@@ -3,6 +3,7 @@
     <section id='members' v-else>
         <p>Ukupno članova: {{ members.active.length + members.inactive.length }} (aktivni: {{ members.active.length }}, neaktivni: {{ members.inactive.length }})</p>
         <p><a href='/members/new' @click.prevent='newMemberShowing = 1'>Novi član</a></p>
+        <p><a href='#' @click.prevent='statsShowing = 1'>Statistika</a></p>
         <input type='text' v-model='searchQuery' placeholder='Petraži po imenu' style='width:auto'>
         <div class='active'>
             <h2>Aktivni</h2>
@@ -18,6 +19,12 @@
                 <new-or-edit-member></new-or-edit-member>
             </div>
         </modal>
+        <modal v-if='statsShowing' @close='statsShowing = 0'>
+            <span slot='header'>Statistika</span>
+            <div slot='body'>
+                <member-payments-monthly-stats></member-payments-monthly-stats>
+            </div>
+        </modal>
     </section>
 </template>
 
@@ -29,7 +36,8 @@
         data() {
             return {
                 searchQuery: '',
-                newMemberShowing: 0
+                newMemberShowing: 0,
+                statsShowing: 0
             }
         },
         computed: {
