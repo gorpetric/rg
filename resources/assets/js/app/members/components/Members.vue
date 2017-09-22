@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import moment from 'moment'
     import { mapGetters, mapActions } from 'vuex'
+    import { getDaysDifference } from '../helpers'
 
     export default {
         data() {
@@ -47,8 +47,8 @@
             }),
             sortedActive() {
                 return this.members.active.sort((a, b) => {
-                    let dda = this.getDaysDifference(a)
-                    let ddb = this.getDaysDifference(b)
+                    let dda = getDaysDifference(a)
+                    let ddb = getDaysDifference(b)
                     return dda - ddb
                 })
             },
@@ -81,15 +81,7 @@
         methods: {
             ...mapActions({
                 getData: 'members/getData'
-            }),
-            getDaysDifference(member) {
-                let date = this.getLatestValidUntil(member)
-                return date.diff(moment().startOf('day'), 'days')
-            },
-            getLatestValidUntil(member) {
-                if(!member.payments.length) return moment(member.joined_at).startOf('day')
-                return moment(member.payments[0].valid_until).startOf('day')
-            }
+            })
         },
         mounted() {
             this.getData()

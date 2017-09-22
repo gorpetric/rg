@@ -15,7 +15,7 @@
         <div v-else>
             <p v-if='!Object.keys(data).length'>Nema zapisa</p>
             <div v-else style='padding: 10px'>
-                <p>Ukupno: {{ data.total | dotPrice }} kn</p>
+                <p>Ukupno: {{ data.total | money }} kn</p>
                 <hr>
                 <p v-for='payment in data.payments'>{{ payment.valid_from | moment }} - {{ payment.value }} ({{ payment.member.name }})</p>
             </div>
@@ -50,14 +50,6 @@
                     this.loading = 0
                     this.form.errors.record(errors.response.data.errors)
                 })
-            }
-        },
-        filters: {
-            moment(val) {
-                return moment(val).format('DD.MM.YYYY.')
-            },
-            dotPrice(val) {
-                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
             }
         },
         mounted() {
