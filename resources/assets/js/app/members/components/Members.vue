@@ -1,5 +1,5 @@
 <template>
-    <i v-if='loading' class='fa fa-spinner'></i>
+    <div v-if='loading' class='loader'></div>
     <section id='members' v-else>
         <p>Ukupno članova: {{ members.active.length + members.inactive.length }} (aktivni: {{ members.active.length }}, neaktivni: {{ members.inactive.length }})</p>
         <p><a href='/members/new' @click.prevent='newMemberShowing = 1'>Novi član</a></p>
@@ -88,13 +88,3 @@
         }
     }
 </script>
-
-<style scoped>
-@keyframes spin {
-    from { transform: rotate(0deg) }
-    to { transform: rotate(360deg) }
-}
-.fa-spinner {
-    animation: spin 1s infinite;
-}
-</style>

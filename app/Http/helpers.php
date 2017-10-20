@@ -13,3 +13,8 @@ function formatBytes($bytes, $precision = 2) {
 
     return round($bytes, $precision) . ' ' . $units[$pow];
 }
+
+function setActive($path, $active = 'active')
+{
+    return (Request::is($path) || Request::is($path.'/*')) ? $active : '';
+}

@@ -3,12 +3,13 @@ $main-font: 'Roboto', sans-serif
 
 // z-index
 $z-main: 1
-$z-nav: 2
-$z-modal: 3
+$z-nav: 4
+$z-modal: 2
+$z-overlay: 3
 
 // colors
-$white: #fff
-$black: #000
+$white: white
+$black: #333
 $red: red
 $gold-light: rgba(#dfbe6a, .8)
 $gold-dark: rgba(#926f34, .8)
@@ -17,7 +18,9 @@ $blue-dark: #3b5998
 
 // Layout
 $container-width: 800px
-$nav-height: 50px
+$nav-height: 60px
+$nav-breakpoint: 420px
+$nav-mobile-width: 200px
 
 @mixin mq($canvas)
     @if $canvas == l

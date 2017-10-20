@@ -1,3 +1,11 @@
+header
+    height: calc(80vh - #{$nav-height})
+    background:
+        image: url(/img/header.jpg)
+        size: cover
+        repeat: no-repeat
+        attachment: fixed
+
 nav.navigation
     position: fixed
     z-index: $z-nav
@@ -5,49 +13,159 @@ nav.navigation
     left: 0
     width: 100%
     height: $nav-height
-    background: white
-    box-shadow: 1px 1px 1px rgba(0,0,0,0.5)
+    background: transparentize(black, .1)
+    border-bottom: 1px solid $gold-dark
+    user-select: none
 
     .inner
         max-width: $container-width
         margin: 0 auto
         display: flex
         justify-content: space-between
-        align-items: center
         height: 100%
-        color: black
+        color: white
 
-        @media(max-width: 400px)
-            span
-                display: none
-
-    .avatar
-        height: $nav-height
-
-    .logo
-        display: block
-        height: 100%
-        padding: 5px 0
-
-        img
-            max-height: 100%
-
-    .right
-        height: 100%
-        display: flex
-
-        .nav-link
+        .brand
+            height: 100%
             display: flex
+            align-items: center
+
+            img
+                max-height: calc(#{$nav-height} - 10px)
+
+        .nav-toggle
             height: 100%
             align-items: center
-            font-size: 25px
-            color: black
-            padding: 0px 10px
+            cursor: pointer
+            padding: 0 20px
+            display: none
 
-.barbell
-    background:
-        image: url('/img/barbell2.jpg')
-        attachment: fixed
-        position: top
-        repeat: no-repeat
-    height: 25vh
+            &:hover
+                background: transparentize($gold-light, .6)
+
+            @media(max-width: $nav-breakpoint)
+                display: flex
+
+        .links
+            position: relative
+            height: 100%
+            display: flex
+            border: none
+
+            @media(max-width: $nav-breakpoint)
+                display: block
+                position: fixed
+                width: $nav-mobile-width
+                right: -$nav-mobile-width
+                top: $nav-height
+                height: calc(100% - #{$nav-height})
+                background: transparentize(black, .1)
+                border-left: 1px solid $gold-dark
+                text-align: center
+                overflow-y: auto
+                transition: right 300ms ease-in-out
+
+                &.is-showing
+                    right: 0
+
+            a.nav-item, .dropdown
+                color: white
+                display: flex
+                align-items: center
+                height: 100%
+                padding: 0 20px
+                border-left: 1px solid $gold-dark
+
+                &:hover
+                    background: transparentize($gold-light, .6)
+
+                &.is-active
+                    color: $gold-light
+
+                @media(max-width: $nav-breakpoint)
+                    display: block
+                    height: auto
+                    border: none
+                    padding: 20px
+                    border-bottom: 1px solid $gold-dark
+
+            .dropdown
+                cursor: pointer
+                position: relative
+                padding: 0
+
+                @media(max-width: $nav-breakpoint)
+                    border-bottom: none
+
+                &:hover
+                    .dropdown-inner
+                        display: block
+
+                .dropdown-toggle
+                    height: 100%
+                    display: flex
+                    align-items: center
+                    padding: 0 20px
+
+                    @media(max-width: $nav-breakpoint)
+                        display: none
+
+                .dropdown-inner
+                    display: none
+                    border: 1px solid $gold-dark
+                    position: absolute
+                    background: transparentize(black, .1)
+                    top: 100%
+                    right: 0
+                    text-align: center
+
+                    @media(max-width: $nav-breakpoint)
+                        display: block
+                        background: transparent
+                        border: none
+
+                    &.is-showing
+                        display: block
+
+                    a.dropdown-item
+                        display: inline-block
+                        color: white
+                        padding: 10px 20px
+                        width: 100%
+                        border-bottom: 1px solid $gold-dark
+
+                        &:last-child
+                            border-bottom: none
+
+                        &:hover
+                            background: transparentize($gold-light, .6)
+
+                        @media(max-width: $nav-breakpoint)
+                            padding: 20px
+
+                    .group
+                        border-bottom: 1px solid $gold-dark
+                        padding: 10px 0
+
+                        &:last-child
+                            border-bottom: none
+
+                        span
+                            font-weight: 300
+                            color: $gold-dark
+                            cursor: default
+                            display: inline-block
+                            width: 100%
+
+                        a.group-item
+                            display: inline-block
+                            color: white
+                            padding: 10px 20px
+                            border-bottom: 1px solid #333
+                            width: 100%
+
+                            &:last-child
+                                border-bottom: none
+
+                            &:hover
+                                background: transparentize($gold-light, .6)

@@ -11,7 +11,7 @@
             <span class='error-block' v-if='form.errors.has("month")'>{{ form.errors.get('month') }}</span>
             <span class='error-block' v-if='form.errors.has("year")'>{{ form.errors.get('year') }}</span>
         </form>
-        <i class='fa fa-spinner' v-if='loading'></i>
+        <div class='loader' v-if='loading' style='margin: 10px 0'></div>
         <div v-else>
             <p v-if='!Object.keys(data).length'>Nema zapisa</p>
             <div v-else style='padding: 10px'>
@@ -57,13 +57,3 @@
         }
     }
 </script>
-
-<style scoped>
-@keyframes spin {
-    from { transform: rotate(0deg) }
-    to { transform: rotate(360deg) }
-}
-.fa-spinner {
-    animation: spin 1s infinite;
-}
-</style>

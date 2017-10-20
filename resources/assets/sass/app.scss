@@ -15,11 +15,10 @@ body, html {
 }
 
 body {
-    //background-color: $dark-bg;
-    //background-image: radial-gradient(circle farthest-side at 50% 0%, #343843, $dark-bg);
     font-family: $main-font;
     font-size: 18px;
-    //color: $dark-text;
+    //background-color: $black;
+    //color: white;
 }
 
 @import 'stuff';

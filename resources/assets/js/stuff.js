@@ -31,4 +31,31 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         }
     }
+
+    // dropdown menu
+    const overlay = document.querySelector('.overlay')
+    const navToggle = document.querySelector('.navigation .inner .nav-toggle')
+    const navLinks = document.querySelector('.navigation .inner .links')
+
+    let dropdowns = document.querySelectorAll('.navigation .inner .links .dropdown')
+    if(dropdowns.length) {
+        for(let i = 0; i < dropdowns.length; i++) {
+            let dropdownInner = dropdowns[i].querySelector('.dropdown-inner')
+            let dropdownToggle = dropdowns[i].querySelector('.dropdown-toggle')
+            dropdownToggle.addEventListener('click', () => {
+                dropdownInner.classList.toggle('is-showing')
+                overlay.classList.toggle('is-active')
+            })
+            overlay.addEventListener('click', () => {
+                if(dropdownInner.classList.contains('is-showing')) dropdownInner.classList.remove('is-showing')
+                if(navLinks.classList.contains('is-showing')) navLinks.classList.remove('is-showing')
+                if(overlay.classList.contains('is-active')) overlay.classList.remove('is-active')
+            })
+        }
+    }
+
+    navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('is-showing')
+        overlay.classList.toggle('is-active')
+    })
 })
