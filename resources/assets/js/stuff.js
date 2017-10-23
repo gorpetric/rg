@@ -44,18 +44,31 @@ document.addEventListener('DOMContentLoaded', () => {
             let dropdownToggle = dropdowns[i].querySelector('.dropdown-toggle')
             dropdownToggle.addEventListener('click', () => {
                 dropdownInner.classList.toggle('is-showing')
-                overlay.classList.toggle('is-active')
+
+                if(dropdownInner.classList.contains('is-showing')) {
+                    if(!overlay.classList.contains('is-active')) overlay.classList.add('is-active')
+                } else {
+                    if(overlay.classList.contains('is-active')) overlay.classList.remove('is-active')
+                }
             })
             overlay.addEventListener('click', () => {
                 if(dropdownInner.classList.contains('is-showing')) dropdownInner.classList.remove('is-showing')
-                if(navLinks.classList.contains('is-showing')) navLinks.classList.remove('is-showing')
-                if(overlay.classList.contains('is-active')) overlay.classList.remove('is-active')
             })
         }
     }
 
     navToggle.addEventListener('click', () => {
         navLinks.classList.toggle('is-showing')
-        overlay.classList.toggle('is-active')
+
+        if(navLinks.classList.contains('is-showing')) {
+            if(!overlay.classList.contains('is-active')) overlay.classList.add('is-active')
+        } else {
+            if(overlay.classList.contains('is-active')) overlay.classList.remove('is-active')
+        }
+    })
+
+    overlay.addEventListener('click', () => {
+        if(navLinks.classList.contains('is-showing')) navLinks.classList.remove('is-showing')
+        if(overlay.classList.contains('is-active')) overlay.classList.remove('is-active')
     })
 })
