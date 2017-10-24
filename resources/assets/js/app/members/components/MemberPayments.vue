@@ -26,6 +26,7 @@
 
 <script>
     import Form from '../../../Form'
+    import moment from 'moment'
     import { mapGetters } from 'vuex'
     import { getLatestValidUntil } from '../helpers'
 
@@ -60,10 +61,18 @@
                 return total
             },
             setUpNewPaymentInputs() {
-                this.form.value = this.member.active ? this.membership_monthly : this.membership_daily
-                this.form.valid_from = this.getLatestValidUntil().format('YYYY-MM-DD')
-                this.form.valid_until = this.getLatestValidUntil().add(1, 'M').format('YYYY-MM-DD')
                 this.form.description = null
+
+                if(this.member.active) {
+                    this.form.value = this.membership_monthly
+                    this.form.valid_from = this.getLatestValidUntil().format('YYYY-MM-DD')
+                    this.form.valid_until = this.getLatestValidUntil().add(1, 'M').format('YYYY-MM-DD')
+                    return
+                }
+
+                this.form.value = this.membership_daily
+                this.form.valid_from = moment().startOf('day').format('YYYY-MM-DD')
+                this.form.valid_until = moment().startOf('day').format('YYYY-MM-DD')
             },
             addNewPayment() {
                 this.form.post('/members/'+this.member.id+'/payments').then((response) => {
