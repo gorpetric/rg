@@ -15,11 +15,17 @@
             <hr>
         </div>
         <p>Ukupno: {{ getPaymentsTotal() | money }} kn</p>
-        <div v-for='payment in member.payments' class='memberPayment'>
+        <div v-for='(payment, index) in member.payments' class='memberPayment' :class="{ 'is-about-to-delete' : deletingPaymentId == payment.id }">
             Cijena: <strong>{{ payment.value }}</strong><br>
             Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
             Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
             <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
+            <div v-if='index == 0 && !deletingPaymentId'><a href='#' @click.prevent='deletingPaymentId = payment.id'>Obriši</a></div>
+            <div v-if='index == 0 && deletingPaymentId'>
+                <span>Sigurno?</span>
+                <a href='#' @click.prevent='deletingPaymentId = null'>Odustani</a>
+                <button class='form-btn' @click.prevent='deletePayment(payment)'>Da, obriši</button>
+            </div>
         </div>
     </div>
 </template>
@@ -35,6 +41,7 @@
         data() {
             return {
                 toggleNewPayment: 0,
+                deletingPaymentId: null,
                 form: new Form({
                     value: 100,
                     valid_from: null,
@@ -80,6 +87,17 @@
                     this.toggleNewPayment = 0
                     this.setUpNewPaymentInputs()
                 })
+            },
+            deletePayment(payment) {
+                this.deletingPaymentId = payment.id
+
+                axios.delete('/members/'+this.member.id+'/payments/'+payment.id).then((response) => {
+                    this.member.payments.shift()
+                    this.deletingPaymentId = null
+                    this.setUpNewPaymentInputs()
+                }).catch((err) => {
+                    alert('Something went wrong! Please try again.');
+                })
             }
         },
         mounted() {
@@ -88,11 +106,13 @@
     }
 </script>
 
-<style scoped>
-.memberPayment{
-    padding: 10px 0;
-}
-.memberPayment:nth-child(odd) {
-    background: #f5f5f5;
-}
+<style scoped lang=sass>
+.memberPayment
+    padding: 10px 0
+
+.memberPayment:nth-child(odd)
+    background: #f5f5f5
+
+.is-about-to-delete
+    background: transparentize(red, .8) !important
 </style>

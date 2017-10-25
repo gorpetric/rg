@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Members;
 
+use Log;
 use App\Models\Member;
 use App\Models\MemberPayment;
 use Illuminate\Http\Request;
@@ -24,9 +25,42 @@ class MemberPaymentsController extends Controller
             'description' => $request->description,
         ]);
 
+        Log::info('Member payment created', [
+            'created_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
+            'member' => $member->id . '('.$member->name.')',
+            'payment' => [
+                'id' => $newPayment->id,
+                'value' => $newPayment->value,
+                'valid_from' => $newPayment->valid_from,
+                'valid_until' => $newPayment->valid_until,
+                'description' => $newPayment->description,
+            ],
+        ]);
+
         return response()->json([
             'data' => $newPayment,
         ]);
+    }
+
+    public function deletePayment(Request $request, Member $member, MemberPayment $payment)
+    {
+        if(!$member->payments->contains($payment->id)) return response(null, 400);
+
+        $payment->delete();
+
+        Log::info('Member payment deleted', [
+            'deleted_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
+            'member' => $member->id . '('.$member->name.')',
+            'payment' => [
+                'id' => $payment->id,
+                'value' => $payment->value,
+                'valid_from' => $payment->valid_from,
+                'valid_until' => $payment->valid_until,
+                'description' => $payment->description,
+            ],
+        ]);
+
+        return response(null, 200);
     }
 
     public function getMonthlyStats(Request $request)

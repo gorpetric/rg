@@ -24,6 +24,7 @@ Route::group([
     Route::get('', 'Members\MembersController@index')->name('members.index');
     Route::get('data', 'Members\MembersController@getData');
     Route::post('{member}/payments', 'Members\MemberPaymentsController@postNewPayment');
+    Route::delete('{member}/payments/{payment}', 'Members\MemberPaymentsController@deletePayment');
     Route::post('{member}/edit', 'Members\MembersController@postEditMember');
     Route::post('new', 'Members\MembersController@postNewMember');
     Route::get('stats/monthly', 'Members\MemberPaymentsController@getMonthlyStats');
