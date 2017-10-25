@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-if='!toggleNewPayment' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo plaćanje</a><hr></div>
-        <div v-else style='margin-bottom:10px'>
+        <div v-if='!toggleNewPayment && !deletingPaymentId' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo plaćanje</a><hr></div>
+        <div v-if='toggleNewPayment' style='margin-bottom:10px'>
             *Cijena <input type='text' style='width:auto' v-model='form.value' maxlength='3'><br><br>
             <span class='error-block' v-if='form.errors.has("value")'>{{ form.errors.get('value') }}</span>
             *Vrijedi od <input type='date' v-model='form.valid_from'><br><br>
@@ -20,8 +20,8 @@
             Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
             Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
             <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
-            <div v-if='index == 0 && !deletingPaymentId'><a href='#' @click.prevent='deletingPaymentId = payment.id'>Obriši</a></div>
-            <div v-if='index == 0 && deletingPaymentId'>
+            <div v-if='index == 0 && !deletingPaymentId && !toggleNewPayment'><a href='#' @click.prevent='deletingPaymentId = payment.id'>Obriši</a></div>
+            <div v-if='index == 0 && deletingPaymentId == payment.id && !toggleNewPayment'>
                 <span>Sigurno?</span>
                 <a href='#' @click.prevent='deletingPaymentId = null'>Odustani</a>
                 <button class='form-btn' @click.prevent='deletePayment(payment)'>Da, obriši</button>
