@@ -52,16 +52,7 @@ class BackupController extends Controller
             abort(404);
         }
 
-        $fs = $disk->getDriver();
-        $stream = $fs->readStream($backup);
-
-        return response()->stream(function() use ($stream) {
-            fpassthru($stream);
-        }, 200, [
-            'Content-Type' => $fs->getMimetype($backup),
-            'Content-Length' => $fs->getSize($backup),
-            'Content-disposition' => "attachment; filename=\"" . basename($backup) . "\"",
-        ]);
+        return $disk->download($backup, basename($backup));
     }
 
     public function delete($backup_name)
