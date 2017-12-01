@@ -19,7 +19,8 @@ $blue-dark: #3b5998
 // Layout
 $container-width: 800px
 $nav-height: 60px
-$nav-breakpoint: 420px
+$nav-breakpoint: 460px
+$nav-breakpoint-height: 280px
 $nav-mobile-width: 200px
 
 @mixin mq($canvas)
@@ -31,4 +32,7 @@ $nav-mobile-width: 200px
             @content
     @else if $canvas == s
         @media(max-width: 500px)
+            @content
+    @else if $canvas == nav
+        @media(max-width: $nav-breakpoint), (max-height: $nav-breakpoint-height)
             @content

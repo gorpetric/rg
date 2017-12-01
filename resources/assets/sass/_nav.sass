@@ -1,5 +1,5 @@
 header
-    height: calc(80vh - #{$nav-height})
+    height: calc(60vh - #{$nav-height})
     background:
         image: url(/img/header.jpg)
         size: cover
@@ -13,9 +13,12 @@ nav.navigation
     left: 0
     width: 100%
     height: $nav-height
-    background: transparentize(black, .1)
-    border-bottom: 1px solid $gold-dark
+    background: black
     user-select: none
+    border-bottom: none
+
+    @include mq(nav)
+        border-bottom: 1px solid $gold-dark
 
     .inner
         max-width: $container-width
@@ -31,7 +34,7 @@ nav.navigation
             align-items: center
 
             img
-                max-height: calc(#{$nav-height} - 10px)
+                max-height: calc(#{$nav-height} - 20px)
 
         .nav-toggle
             height: 100%
@@ -43,7 +46,7 @@ nav.navigation
             &:hover
                 background: transparentize($gold-light, .6)
 
-            @media(max-width: $nav-breakpoint)
+            @include mq(nav)
                 display: flex
 
         .links
@@ -52,14 +55,14 @@ nav.navigation
             display: flex
             border: none
 
-            @media(max-width: $nav-breakpoint)
+            @include mq(nav)
                 display: block
                 position: fixed
                 width: $nav-mobile-width
                 right: -$nav-mobile-width
                 top: $nav-height
                 height: calc(100% - #{$nav-height})
-                background: transparentize(black, .1)
+                background: black
                 border-left: 1px solid $gold-dark
                 text-align: center
                 overflow-y: auto
@@ -74,7 +77,6 @@ nav.navigation
                 align-items: center
                 height: 100%
                 padding: 0 20px
-                border-left: 1px solid $gold-dark
 
                 &:hover
                     background: transparentize($gold-light, .6)
@@ -82,7 +84,7 @@ nav.navigation
                 &.is-active
                     color: $gold-light
 
-                @media(max-width: $nav-breakpoint)
+                @include mq(nav)
                     display: block
                     height: auto
                     border: none
@@ -94,7 +96,7 @@ nav.navigation
                 position: relative
                 padding: 0
 
-                @media(max-width: $nav-breakpoint)
+                @include mq(nav)
                     border-bottom: none
 
                 &:hover
@@ -107,19 +109,19 @@ nav.navigation
                     align-items: center
                     padding: 0 20px
 
-                    @media(max-width: $nav-breakpoint)
+                    @include mq(nav)
                         display: none
 
                 .dropdown-inner
                     display: none
                     border: 1px solid $gold-dark
                     position: absolute
-                    background: transparentize(black, .1)
+                    background: black
                     top: 100%
-                    right: -1px
+                    right: 0
                     text-align: center
 
-                    @media(max-width: $nav-breakpoint)
+                    @include mq(nav)
                         display: block
                         background: transparent
                         border: none
@@ -132,7 +134,7 @@ nav.navigation
                     a.dropdown-item
                         display: inline-block
                         color: white
-                        padding: 10px 20px
+                        padding: 20px
                         width: 100%
                         border-bottom: 1px solid $gold-dark
 
@@ -142,12 +144,9 @@ nav.navigation
                         &:hover
                             background: transparentize($gold-light, .6)
 
-                        @media(max-width: $nav-breakpoint)
-                            padding: 20px
-
                     .group
                         border-bottom: 1px solid $gold-dark
-                        padding: 10px 0
+                        padding: 10px 0 0 0
 
                         &:last-child
                             border-bottom: none
@@ -162,7 +161,7 @@ nav.navigation
                         a.group-item
                             display: inline-block
                             color: white
-                            padding: 10px 20px
+                            padding: 20px
                             border-bottom: 1px solid #333
                             width: 100%
 
