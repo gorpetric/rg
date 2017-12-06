@@ -13,7 +13,7 @@
             <a href='#' @click.prevent='paymentsShowing = 1'>Prikaži plaćanja</a>
         </div>
         <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
-            <span slot='header'>{{ member.name }} - plaćanja ( {{ getDaysDifference() }} )</span>
+            <span slot='header'>{{ member.name }} - plaćanja<span v-if='member.active'> ( {{ getDaysDifference() }} )</span></span>
             <div slot='body'>
                 <member-payments :member='member'></member-payments>
             </div>
