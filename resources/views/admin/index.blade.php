@@ -17,6 +17,7 @@
                 <input type='checkbox' name='role_boss' id='role_boss' {{ $user->hasRole('boss') ? "checked='checked'" : '' }}>&nbsp;
                 {{ csrf_field() }}
                 <input type='submit' value='Update' class='form-btn'>
+                <a href='{{ route("admin.users.impersonate", $user) }}'>Impersonate</a>
             </form>
             <hr>
         </div>

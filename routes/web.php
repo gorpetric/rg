@@ -17,6 +17,8 @@ Route::get('/login/{service}', 'SocialLoginController@redirect');
 Route::get('/login/{service}/callback', 'SocialLoginController@callback');
 Route::get('/logout', 'HomeController@logout')->name('logout')->middleware('auth');
 
+Route::delete('/impersonate', 'Admin\ImpersonateController@destroy')->name('admin.users.impersonate.stop');
+
 Route::group([
     'middleware' => ['role:boss'],
     'prefix' => 'members',
@@ -36,6 +38,8 @@ Route::group([
 ], function() {
     Route::get('', 'Admin\AdminController@index')->name('admin.index');
     Route::post('/users/{user}/sync-roles', 'Admin\AdminController@syncUserRoles')->name('admin.users.syncRoles');
+	
+	Route::get('/impersonate/{user}', 'Admin\ImpersonateController@store')->name('admin.users.impersonate');
 
     Route::group(['prefix' => 'backup'], function() {
         Route::get('', 'Admin\BackupController@index')->name('admin.backup.index');

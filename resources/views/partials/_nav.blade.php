@@ -3,16 +3,16 @@
         <div class='brand'>
             <a href='{{ route("home") }}' title='Royal Gym'><img src='{{ asset("img/logo.png") }}' alt='Royal Gym logo'></a>
         </div>
-        <div class='nav-toggle'><i class='fa fa-bars'></i></div>
+        <div class='nav-toggle'><i class='fas fa-bars'></i></div>
         <div class='links'>
-            <a href='{{ route("home") }}' class='nav-item {{ Request::is("/") ? "is-active" : "" }}' title='Početna'><i class='fa fa-home'></i></a>
+            <a href='{{ route("home") }}' class='nav-item {{ Request::is("/") ? "is-active" : "" }}' title='Početna'><i class='fas fa-home'></i></a>
             @auth
                 <a href='#' class='nav-item {{ setActive("forum") }}'>Forum</a>
                 @hasanyrole('admin|boss')
                     <a href='{{ route("members.index") }}' class='nav-item {{ setActive("members") }}'>Članovi</a>
                 @endhasanyrole
                 <div class='dropdown'>
-                    <div class='dropdown-toggle'><i class='fa fa-user'></i>&nbsp;<i class='fa fa-caret-down'></i></div>
+                    <div class='dropdown-toggle'><i class='fas fa-user'></i>&nbsp;<i class='fas fa-caret-down'></i></div>
                     <div class='dropdown-inner'>
                         @role('admin')
                             <div class='group'>
@@ -21,12 +21,19 @@
                                 <a href='{{ route("admin.backup.index") }}' class='group-item'>Backup</a>
                             </div>
                         @endrole
-                        <a href='{{ route("logout") }}' class='dropdown-item'><i class='fa fa-sign-out'>&nbsp;Odjava</i></a>
+                        @impersonating
+                            <a href='#' class='dropdown-item' onclick='event.preventDefault(); document.getElementById("stopImpersonateForm").submit();'>Stop impersonating</a>
+                            <form action='{{ route("admin.users.impersonate.stop") }}' method='POST' id='stopImpersonateForm'>
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endimpersonating
+                        <a href='{{ route("logout") }}' class='dropdown-item'><i class='fas fa-sign-out-alt'></i>&nbsp;Odjava</a>
                     </div>
                 </div>
             @endauth
             @guest
-                <a href='/login/facebook' class='nav-item'>Prijava &nbsp;<i class='fa fa-facebook'></i></a>
+                <a href='/login/facebook' class='nav-item'>Prijava &nbsp;<i class='fab fa-facebook-square'></i></a>
             @endguest
         </div>
     </div>
