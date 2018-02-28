@@ -4,7 +4,7 @@
         <div class='modal-container' @click.stop>
             <div class='modal-header'>
                 <slot name='header'></slot>
-                <i class='fas fa-times' @click="$emit('close')" title='Close'></i>
+                <i class='fas fa-times' @click='close' title='Close'></i>
             </div>
             <div class='modal-inner'>
                 <slot name='body'></slot>
@@ -23,6 +23,7 @@
         },
         methods: {
             close() {
+                document.body.classList.remove('modal-open')
                 this.$emit('close')
             }
         },
@@ -30,6 +31,7 @@
             document.addEventListener('keydown', (e) => {
                 if(e.keyCode == 27) this.close()
             })
+            document.body.classList.add('modal-open')
         }
     }
 </script>

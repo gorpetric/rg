@@ -5,19 +5,27 @@
         <div class='members-controls'>
             <p>
                 Ukupno članova: {{ members.active.length + members.inactive.length }}<br>
-                Aktivni: {{ members.active.length }}<br>
-                Neaktivni: {{ members.inactive.length }}<br>
+                <label for='filter-active'>Aktivni: {{ members.active.length }}</label>
+                <input type='checkbox' v-model='filter.active' id='filter-active'><br>
+                <label for='filter-inactive'>Neaktivni: {{ members.inactive.length }}</label>
+                <input type='checkbox' v-model='filter.inactive' id='filter-inactive'><br>
+                <label for='filter-red'>Crveni</label>
+                <input type='checkbox' v-model='filter.red' :disabled='!filter.active' id='filter-red'><br>
+                <label for='filter-orange'>Narandžasti</label>
+                <input type='checkbox' v-model='filter.orange' :disabled='!filter.active' id='filter-orange'><br>
+                <label for='filter-green'>Zeleni</label>
+                <input type='checkbox' v-model='filter.green' :disabled='!filter.active' id='filter-green'><br>
                 <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
             </p>
             <button class='btn' @click='newMemberShowing = 1' title='Novi član'><i class='fas fa-user-plus'></i></button>
             <button class='btn' @click='statsShowing = 1' title='Statistika'><i class='fas fa-list-ol'></i></button>
         </div>
         <div class='members-list'>
-            <div class='active'>
+            <div class='active' v-show='filter.active && searchedActive.length'>
                 <h2>Aktivni</h2>
                 <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
             </div>
-            <div class='inactive'>
+            <div class='inactive' v-show='filter.inactive && searchedInactive.length'>
                 <h2>Neaktivni</h2>
                 <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
             </div>
@@ -34,6 +42,7 @@
                 <member-payments-monthly-stats></member-payments-monthly-stats>
             </div>
         </modal>
+        <div style='height: 1000px'></div>
     </section>
 </template>
 
@@ -46,7 +55,14 @@
             return {
                 searchQuery: '',
                 newMemberShowing: 0,
-                statsShowing: 0
+                statsShowing: 0,
+                filter: {
+                    active: true,
+                    inactive: true,
+                    green: true,
+                    orange: true,
+                    red: true
+                }
             }
         },
         computed: {
@@ -55,18 +71,29 @@
                 members: 'members/members'
             }),
             sortedActive() {
-                return this.members.active.sort((a, b) => {
+                return this.filteredActive.sort((a, b) => {
                     let dda = getDaysDifference(a)
                     let ddb = getDaysDifference(b)
                     return dda - ddb
                 })
             },
             sortedInactive() {
-                return this.members.inactive.sort((a, b) => {
+                return this.filteredInactive.sort((a, b) => {
                     if(a.name < b.name) return -1
                     if(a.name > b.name) return 1
                     return 0
                 })
+            },
+            filteredActive() {
+                return this.members.active.filter(member => {
+                    let dd = getDaysDifference(member)
+                    if(dd <= 0 && this.filter.red) return member
+                    else if(dd > 0 && dd <= 5 && this.filter.orange) return member
+                    else if(dd > 5 && this.filter.green) return member
+                })
+            },
+            filteredInactive() {
+                return this.members.inactive
             },
             searchedActive() {
                 let searchRegex = new RegExp(this.searchQuery, 'i')
