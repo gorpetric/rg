@@ -4,7 +4,7 @@
         <div class='modal-container' @click.stop>
             <div class='modal-header'>
                 <slot name='header'></slot>
-                <i class='fa fa-close' @click="$emit('close')" title='Close'></i>
+                <i class='fas fa-times' @click="$emit('close')" title='Close'></i>
             </div>
             <div class='modal-inner'>
                 <slot name='body'></slot>
