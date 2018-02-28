@@ -8,9 +8,10 @@
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
             Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
             Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
-            <a :href='"/members/"+member.id+"/edit"' @click.prevent='editMemberShowing = 1'>Uredi</a>
-            <br><br>
-            <a href='#' @click.prevent='paymentsShowing = 1'>Prikaži plaćanja</a>
+            <p class='text-center'>
+                <button class='btn' @click='editMemberShowing = 1' title='Uredi'><i class='fas fa-edit'></i></button>
+                <button class='btn' @click='paymentsShowing = 1' title='Plaćanja'><i class='fas fa-euro-sign'></i></button>
+            </p>
         </div>
         <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
             <span slot='header'>{{ member.name }} - plaćanja<span v-if='member.active'> ( {{ getDaysDifference() }} )</span></span>

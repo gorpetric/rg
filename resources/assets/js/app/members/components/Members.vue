@@ -1,17 +1,26 @@
 <template>
     <div v-if='loading' class='loader'></div>
     <section id='members' v-else>
-        <p>Ukupno članova: {{ members.active.length + members.inactive.length }} (aktivni: {{ members.active.length }}, neaktivni: {{ members.inactive.length }})</p>
-        <p><a href='/members/new' @click.prevent='newMemberShowing = 1'>Novi član</a></p>
-        <p><a href='#' @click.prevent='statsShowing = 1'>Statistika</a></p>
-        <input type='text' v-model='searchQuery' placeholder='Petraži po imenu' style='width:auto'>
-        <div class='active'>
-            <h2>Aktivni</h2>
-            <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
+        <input type='text' v-model='searchQuery' placeholder='Petraži po imenu'>
+        <div class='members-controls'>
+            <p>
+                Ukupno članova: {{ members.active.length + members.inactive.length }}<br>
+                Aktivni: {{ members.active.length }}<br>
+                Neaktivni: {{ members.inactive.length }}<br>
+                <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
+            </p>
+            <button class='btn' @click='newMemberShowing = 1' title='Novi član'><i class='fas fa-user-plus'></i></button>
+            <button class='btn' @click='statsShowing = 1' title='Statistika'><i class='fas fa-list-ol'></i></button>
         </div>
-        <div class='inactive'>
-            <h2>Neaktivni</h2>
-            <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
+        <div class='members-list'>
+            <div class='active'>
+                <h2>Aktivni</h2>
+                <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
+            </div>
+            <div class='inactive'>
+                <h2>Neaktivni</h2>
+                <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
+            </div>
         </div>
         <modal v-if='newMemberShowing' @close='newMemberShowing = 0'>
             <span slot='header'>Novi član</span>
@@ -88,3 +97,29 @@
         }
     }
 </script>
+
+<style scoped lang=sass>
+#members
+    display: flex
+    flex-wrap: wrap
+
+    .members-controls
+        margin-right: 20px
+
+        .btn
+            width: 100%
+            margin: 10px 0
+
+    .members-list
+        flex-grow: 2
+
+    @media(max-width: 650px)
+        display: block
+
+        .members-controls
+            margin: 0
+
+            .btn
+                width: auto
+                margin: 10px
+</style>
