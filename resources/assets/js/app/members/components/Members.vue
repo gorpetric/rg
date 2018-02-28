@@ -42,7 +42,6 @@
                 <member-payments-monthly-stats></member-payments-monthly-stats>
             </div>
         </modal>
-        <div style='height: 1000px'></div>
     </section>
 </template>
 
