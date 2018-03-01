@@ -7,14 +7,22 @@
                 Ukupno članova: {{ members.active.length + members.inactive.length }}<br>
                 <label for='filter-active'>Aktivni: {{ members.active.length }}</label>
                 <input type='checkbox' v-model='filter.active' id='filter-active'><br>
+                <ul style='margin:0'>
+                    <li>
+                        <label for='filter-red'>Crveni</label>
+                        <input type='checkbox' v-model='filter.red' :disabled='!filter.active' id='filter-red'>
+                    </li>
+                    <li>
+                        <label for='filter-orange'>Narančasti</label>
+                        <input type='checkbox' v-model='filter.orange' :disabled='!filter.active' id='filter-orange'>
+                    </li>
+                    <li>
+                        <label for='filter-green'>Zeleni</label>
+                        <input type='checkbox' v-model='filter.green' :disabled='!filter.active' id='filter-green'>
+                    </li>
+                </ul>
                 <label for='filter-inactive'>Neaktivni: {{ members.inactive.length }}</label>
                 <input type='checkbox' v-model='filter.inactive' id='filter-inactive'><br>
-                <label for='filter-red'>Crveni</label>
-                <input type='checkbox' v-model='filter.red' :disabled='!filter.active' id='filter-red'><br>
-                <label for='filter-orange'>Narandžasti</label>
-                <input type='checkbox' v-model='filter.orange' :disabled='!filter.active' id='filter-orange'><br>
-                <label for='filter-green'>Zeleni</label>
-                <input type='checkbox' v-model='filter.green' :disabled='!filter.active' id='filter-green'><br>
                 <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
             </p>
             <button class='btn' @click='newMemberShowing = 1' title='Novi član'><i class='fas fa-user-plus'></i></button>
