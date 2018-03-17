@@ -17,4 +17,9 @@ class HomeController extends Controller
         Auth::logout();
         return redirect()->route('home');
     }
+
+    public function privacy()
+    {
+        return view('privacy');
+    }
 }
