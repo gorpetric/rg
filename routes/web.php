@@ -13,6 +13,8 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('privacy', 'HomeController@privacy')->name('privacy');
+
 Route::get('/login/{service}', 'SocialLoginController@redirect');
 Route::get('/login/{service}/callback', 'SocialLoginController@callback');
 Route::get('/logout', 'HomeController@logout')->name('logout')->middleware('auth');
