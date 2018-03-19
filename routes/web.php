@@ -40,7 +40,7 @@ Route::group([
 ], function() {
     Route::get('', 'Admin\AdminController@index')->name('admin.index');
     Route::post('/users/{user}/sync-roles', 'Admin\AdminController@syncUserRoles')->name('admin.users.syncRoles');
-	
+
 	Route::get('/impersonate/{user}', 'Admin\ImpersonateController@store')->name('admin.users.impersonate');
 
     Route::group(['prefix' => 'backup'], function() {

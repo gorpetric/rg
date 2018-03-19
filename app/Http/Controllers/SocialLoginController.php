@@ -18,7 +18,7 @@ class SocialLoginController extends Controller
     public function redirect($service, Request $request)
     {
         if(!app()->environment('production')) {
-            $user = User::find(1);
+            $user = User::findOrFail(1);
             Auth::login($user, false);
             return redirect()->route('home');
         }
