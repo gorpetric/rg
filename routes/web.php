@@ -49,4 +49,6 @@ Route::group([
         Route::get('{backup}/download', 'Admin\BackupController@download')->name('admin.backup.download');
         Route::get('{backup}/delete', 'Admin\BackupController@delete')->name('admin.backup.delete');
     });
+
+    Route::get('logs', 'Admin\AdminController@getLogs')->name('admin.logs');
 });

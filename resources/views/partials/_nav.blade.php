@@ -19,6 +19,7 @@
                                 <span>Admin</span>
                                 <a href='{{ route("admin.index") }}' class='group-item'>Admin</a>
                                 <a href='{{ route("admin.backup.index") }}' class='group-item'>Backup</a>
+                                <a href='{{ route("admin.logs") }}' class='group-item'>Logs</a>
                             </div>
                         @endrole
                         @impersonating

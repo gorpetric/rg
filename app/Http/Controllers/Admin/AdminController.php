@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Auth;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,5 +29,11 @@ class AdminController extends Controller
 
         $user->syncRoles($newRoles);
         return redirect()->back();
+    }
+
+    public function getLogs()
+    {
+        $logs = Log::withTrashed()->get();
+        return view('admin.logs', compact('logs'));
     }
 }

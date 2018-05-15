@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Members;
 
-use Log;
 use App\Models\Member;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -51,9 +50,9 @@ class MembersController extends Controller
             'active' => $request->active ? 1 : 0,
         ]);
 
-        Log::info('Member created', [
-            'created_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
-            'member' => $member->id . '('.$member->name.')',
+        logdb('Member created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
         ]);
 
         return response()->json([
@@ -72,9 +71,9 @@ class MembersController extends Controller
             'joined_at' => $request->joined_at,
         ]);
 
-        Log::info('Member edited', [
-            'edited_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
-            'member' => $member->id . '('.$member->name.')',
+        logdb('Member edited', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
         ]);
 
         return response()->json([

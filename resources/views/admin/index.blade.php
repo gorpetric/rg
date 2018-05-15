@@ -6,7 +6,10 @@
 @section('content')
 <div class='container'>
     <h1>Admin</h1>
-    <p><a href='{{ route("admin.backup.index") }}'>Backup</a></p>
+    <p>
+        <a href='{{ route("admin.backup.index") }}'>Backup</a>
+        <a href='{{ route("admin.logs") }}'>Logs</a>
+    </p>
     @foreach($users as $user)
         <div>
             <h4>{{ $user->name }}</h4>

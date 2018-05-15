@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Members;
 
-use Log;
 use App\Models\Member;
 use App\Models\MemberPayment;
 use Illuminate\Http\Request;
@@ -25,9 +24,9 @@ class MemberPaymentsController extends Controller
             'description' => $request->description,
         ]);
 
-        Log::info('Member payment created', [
-            'created_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
-            'member' => $member->id . '('.$member->name.')',
+        logdb('Member payment created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
             'payment' => [
                 'id' => $newPayment->id,
                 'value' => $newPayment->value,
@@ -48,16 +47,10 @@ class MemberPaymentsController extends Controller
 
         $payment->delete();
 
-        Log::info('Member payment deleted', [
-            'deleted_by' => auth()->user()->id . ' ('.auth()->user()->name.')',
-            'member' => $member->id . '('.$member->name.')',
-            'payment' => [
-                'id' => $payment->id,
-                'value' => $payment->value,
-                'valid_from' => $payment->valid_from,
-                'valid_until' => $payment->valid_until,
-                'description' => $payment->description,
-            ],
+        logdb('Member payment deleted', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'payment' => $payment->id,
         ]);
 
         return response(null, 200);

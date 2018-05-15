@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Log;
+
 function formatBytes($bytes, $precision = 2) {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
@@ -17,4 +19,18 @@ function formatBytes($bytes, $precision = 2) {
 function setActive($path, $active = 'is-active')
 {
     return (Request::is($path) || Request::is($path.'/*')) ? $active : '';
+}
+
+function logdb($message, $context = null, $extra = null, $level = 'INFO') {
+    $env = app()->environment();
+
+    $log = Log::create([
+        'env' => $env,
+        'message' => $message,
+        'level' => $level,
+        'context' => $context,
+        'extra' => $extra,
+    ]);
+
+    return $log;
 }
