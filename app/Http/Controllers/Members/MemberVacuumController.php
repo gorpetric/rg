@@ -32,6 +32,12 @@ class MemberVacuumController extends Controller
             'price_per_appointment' => $request->price_per_appointment,
         ]);
 
+        logdb('Vacuum group created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $g->id,
+        ]);
+
         $g->load('VacuumAppointments');
 
         return response()->json([
@@ -50,6 +56,14 @@ class MemberVacuumController extends Controller
             'appointment_at' => $request->date . $request->time . ':00',
             'finished' => 0,
         ]);
+
+        logdb('Vacuum appointment created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $group->id,
+            'appointment' => $appointment->id,
+        ]);
+
         $appointment->load('VacuumAppointmentMeasures');
 
         return response()->json([
@@ -76,6 +90,15 @@ class MemberVacuumController extends Controller
             'before_or_after' => 'A',
         ]);
 
+        logdb('Vacuum appointment measures created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $group->id,
+            'appointment' => $appointment->id,
+            'before' => $measureBefore->id,
+            'after' => $measureAfter->id,
+        ]);
+
         return response()->json([
             'before' => $measureBefore,
             'after' => $measureAfter,
@@ -93,6 +116,14 @@ class MemberVacuumController extends Controller
             $m->delete();
         }
 
+        logdb('Vacuum appointment measures deleted', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $group->id,
+            'appointment' => $appointment->id,
+            'ids' => $request->ids,
+        ]);
+
         return response(null, 200);
     }
 
@@ -104,6 +135,15 @@ class MemberVacuumController extends Controller
 
         $appointment->update([
             'finished' => $request->finished ? 1 : 0,
+        ]);
+
+        $logword = $request->finished ? 'completed' : 'completed (restored)';
+
+        logdb('Vacuum appointment ' . $logword, [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $group->id,
+            'appointment' => $appointment->id,
         ]);
 
         return response(null, 200);
@@ -118,6 +158,13 @@ class MemberVacuumController extends Controller
 
         $appointment->update([
             'appointment_at' => $request->date . $request->time . ':00',
+        ]);
+
+        logdb('Vacuum appointment edited', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+            'group' => $group->id,
+            'appointment' => $appointment->id,
         ]);
 
         return response(null, 200);
