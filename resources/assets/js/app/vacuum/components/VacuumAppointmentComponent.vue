@@ -58,7 +58,7 @@
                                 <a href='#' @click.prevent='creating_new_measurement = false'>Odustani</a>
                             </td>
                         </tr>
-                        <tr v-if='leftOutParts.length && !creating_new_measurement && !appointment.finished'>
+                        <tr v-if='leftOutParts.length && !creating_new_measurement && appointment.finished == 0'>
                             <td colspan=4><a href='#' @click.prevent='creating_new_measurement = true'>Novo mjerenje</a></td>
                         </tr>
                     </tbody>
