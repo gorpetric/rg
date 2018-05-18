@@ -12,6 +12,9 @@
                 <button class='btn' @click='editMemberShowing = 1' title='Uredi'><i class='fas fa-edit'></i></button>
                 <button class='btn' @click='paymentsShowing = 1' title='Plaćanja'><i class='fas fa-euro-sign'></i></button>
             </p>
+            <p>
+                <a :href='"/members/"+member.id+"/vacuum"'>Vacuum</a>
+            </p>
         </div>
         <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
             <span slot='header'>{{ member.name }} - plaćanja<span v-if='member.active'> ( {{ getDaysDifference() }} )</span></span>

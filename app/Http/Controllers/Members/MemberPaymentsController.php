@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Members;
 
-use App\Models\Member;
-use App\Models\MemberPayment;
+use App\Models\Members\Member;
+use App\Models\Members\MemberPayment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

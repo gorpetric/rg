@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Members;
 
-use App\Models\Member;
+use App\Models\Members\Member;
 use Illuminate\Database\Eloquent\Model;
 
 class MemberPayment extends Model

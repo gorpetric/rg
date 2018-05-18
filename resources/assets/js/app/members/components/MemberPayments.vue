@@ -11,7 +11,7 @@
             Napomena <input type='text' v-model='form.description' placeholder='Opcionalno...'><br><br>
             <span class='error-block' v-if='form.errors.has("description")'>{{ form.errors.get('description') }}</span>
             <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>&nbsp;
-            <button class='form-btn' @click.prevent='addNewPayment()'>Dodaj</button>
+            <button class='form-btn' :disabled='loading' @click.prevent='addNewPayment()'>Dodaj</button>
             <hr>
         </div>
         <p>Ukupno: {{ getPaymentsTotal() | money }} kn</p>
@@ -40,6 +40,7 @@
         props: ['member'],
         data() {
             return {
+                loading: false,
                 toggleNewPayment: 0,
                 deletingPaymentId: null,
                 form: new Form({
@@ -82,11 +83,14 @@
                 this.form.valid_until = moment().startOf('day').format('YYYY-MM-DD')
             },
             addNewPayment() {
+                this.loading = true
+
                 this.form.post('/members/'+this.member.id+'/payments').then((response) => {
                     this.member.payments.unshift(response.data)
                     this.toggleNewPayment = 0
                     this.setUpNewPaymentInputs()
-                })
+                    this.loading = false
+                }).catch(e => this.loading = false)
             },
             deletePayment(payment) {
                 this.deletingPaymentId = payment.id

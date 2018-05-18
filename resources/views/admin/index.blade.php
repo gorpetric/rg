@@ -12,7 +12,7 @@
     </p>
     @foreach($users as $user)
         <div>
-            <h4>{{ $user->name }}</h4>
+            <h4><small>{{ $user->id }} </small>{{ $user->name }}</h4>
             <form action='{{ route("admin.users.syncRoles", $user) }}' method='POST' autocomplete='off'>
                 <label for='role_admin'>admin</label>
                 <input type='checkbox' name='role_admin' id='role_admin' {{ $user->hasRole('admin') ? "checked" : '' }}>&nbsp;

@@ -32,6 +32,14 @@ Route::group([
     Route::post('{member}/edit', 'Members\MembersController@postEditMember');
     Route::post('new', 'Members\MembersController@postNewMember');
     Route::get('stats/monthly', 'Members\MemberPaymentsController@getMonthlyStats');
+
+    Route::get('{member}/vacuum', 'Members\MemberVacuumController@index');
+    Route::post('{member}/vacuum', 'Members\MemberVacuumController@createGroup');
+    Route::post('{member}/vacuum/{group}', 'Members\MemberVacuumController@createAppointment');
+    Route::post('{member}/vacuum/{group}/{appointment}', 'Members\MemberVacuumController@createMeasurement');
+    Route::post('{member}/vacuum/{group}/{appointment}/delete-measure', 'Members\MemberVacuumController@deleteMeasurement');
+    Route::post('{member}/vacuum/{group}/{appointment}/complete-appointment', 'Members\MemberVacuumController@completeAppointment');
+    Route::post('{member}/vacuum/{group}/{appointment}/edit-appointment', 'Members\MemberVacuumController@editAppointment');
 });
 
 Route::group([

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Members;
 
-use App\Models\Member;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Models\Members\Member;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewEditMemberRequest;
 
@@ -20,8 +20,8 @@ class MembersController extends Controller
         $membership_monthly = Setting::where('key', 'membership_monthly')->first()->value;
         $membership_daily = Setting::where('key', 'membership_daily')->first()->value;
 
-        $activeMembers = Member::active()->get()->toArray();
-        $inactiveMembers = Member::inactive()->get()->toArray();
+        $activeMembers = Member::active()->with('payments')->get()->toArray();
+        $inactiveMembers = Member::inactive()->with('payments')->get()->toArray();
 
         $data = [
             'meta' => [
@@ -50,6 +50,8 @@ class MembersController extends Controller
             'active' => $request->active ? 1 : 0,
         ]);
 
+        $member->load('payments');
+
         logdb('Member created', [
             'by' => auth()->user()->id,
             'member' => $member->id,
@@ -70,6 +72,8 @@ class MembersController extends Controller
             'active' => $request->active ? 1 : 0,
             'joined_at' => $request->joined_at,
         ]);
+
+        $member->load('payments');
 
         logdb('Member edited', [
             'by' => auth()->user()->id,

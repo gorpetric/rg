@@ -10,6 +10,7 @@ window.Vue = require('vue')
 require('./components')
 
 Vue.filter('moment', (value) => moment(value).format('DD.MM.YYYY.'))
+Vue.filter('momentt', (value) => moment(value).format('DD.MM.YYYY. H:mm:ss'))
 Vue.filter('money', (value) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'))
 
 const app = new Vue({

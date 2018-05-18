@@ -33,8 +33,8 @@
                 <input type='checkbox' id='active' v-model='form.active'>
                 <span class='error-block' v-if='form.errors.has("active")'>{{ form.errors.get('active') }}</span>
             </div>
-            <input type='submit' value='Uredi' class='form-btn' v-if='member'>
-            <input type='submit' value='Kreiraj' class='form-btn' v-if='!member'>
+            <input type='submit' :disabled='loading' value='Uredi' class='form-btn' v-if='member'>
+            <input type='submit' :disabled='loading' value='Kreiraj' class='form-btn' v-if='!member'>
         </form>
     </div>
 </template>
@@ -52,6 +52,7 @@
         },
         data() {
             return {
+                loading: false,
                 form: new Form({
                     name: this.member ? this.member.name : '',
                     address: this.member ? this.member.address : '',
@@ -72,12 +73,17 @@
                 this.member ? this.editMember() : this.createMember()
             },
             createMember() {
+                this.loading = true
+
                 this.form.post('members/new').then((response) => {
                     this.isSuccess = true
                     this.addNewMember(response.data)
-                })
+                    this.loading = false
+                }).catch(e => this.loading = false)
             },
             editMember() {
+                this.loading = true
+
                 this.form.post('members/'+this.member.id+'/edit').then((response) => {
                     this.isSuccess = true
                     let data = {
@@ -85,7 +91,8 @@
                         activeState: this.member.active
                     }
                     this.editMemberData(data)
-                })
+                    this.loading = false
+                }).catch(e => this.loading = false)
             }
         }
     }
