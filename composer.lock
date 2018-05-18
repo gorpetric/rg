@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b4150aead32088d7ff7677e909b48d2",
+    "content-hash": "5b91017b829946cb35819fb4c4d8bc0c",
     "packages": [
         {
             "name": "codecourse/notify",
@@ -1746,16 +1746,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "5.7.0",
+            "version": "5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "60c6fbc27c9c2cbdf3c7da90b080a63d2599cd2d"
+                "reference": "dc139dd381f38d9afcb6bbf861838acb1c838ef6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/60c6fbc27c9c2cbdf3c7da90b080a63d2599cd2d",
-                "reference": "60c6fbc27c9c2cbdf3c7da90b080a63d2599cd2d",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/dc139dd381f38d9afcb6bbf861838acb1c838ef6",
+                "reference": "dc139dd381f38d9afcb6bbf861838acb1c838ef6",
                 "shasum": ""
             },
             "require": {
@@ -1766,7 +1766,7 @@
                 "illuminate/notifications": "~5.5.0|~5.6.0",
                 "illuminate/support": "~5.5.0|~5.6.0",
                 "league/flysystem": "^1.0.27",
-                "php": "^7.1",
+                "php": "^7.0",
                 "spatie/db-dumper": "^2.10",
                 "spatie/temporary-directory": "^1.1",
                 "symfony/finder": "^3.3|^4.0"
@@ -1815,7 +1815,7 @@
                 "laravel-backup",
                 "spatie"
             ],
-            "time": "2018-05-11T07:06:58+00:00"
+            "time": "2018-05-01T07:48:28+00:00"
         },
         {
             "name": "spatie/laravel-permission",
