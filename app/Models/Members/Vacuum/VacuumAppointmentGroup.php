@@ -15,7 +15,7 @@ class VacuumAppointmentGroup extends Model
         'num_of_appointments', 'price_per_appointment',
     ];
 
-    protected $with = ['VacuumAppointments'];
+    //protected $with = ['VacuumAppointments'];
 
     public function member()
     {

@@ -7,9 +7,9 @@
         <div class='links'>
             <a href='{{ route("home") }}' class='nav-item {{ Request::is("/") ? "is-active" : "" }}' title='Početna'><i class='fas fa-home'></i></a>
             @auth
-                <a href='#' class='nav-item {{ setActive("forum") }}'>Forum</a>
                 @hasanyrole('admin|boss')
-                    <a href='{{ route("members.index") }}' class='nav-item {{ setActive("members") }}'>Članovi</a>
+                    <a href='{{ route("members.index") }}' class='nav-item'>Članovi</a>
+                    <a href='{{ route("members.vacuum.index") }}' class='nav-item'>Vacuum</a>
                 @endhasanyrole
                 <div class='dropdown'>
                     <div class='dropdown-toggle'><i class='fas fa-user'></i>&nbsp;<i class='fas fa-caret-down'></i></div>

@@ -1,0 +1,146 @@
+<template>
+    <div class='container'>
+        <h2>Članovi <small>- vacuum termini</small></h2>
+        <p><button class='btn' @click='newAppModal = true'>Novi termin</button></p>
+        <p v-if='!appointments.length'>Nema termina</p>
+        <template v-else>
+            <p>
+                <select v-model='filter'>
+                    <option value=0>Nezavršeni</option>
+                    <option value=1>Završeni</option>
+                    <option value=2>Svi</option>
+                </select>
+                <select v-model='sort'>
+                    <option value=0>Najstariji</option>
+                    <option value=1>Najnoviji</option>
+                </select>
+            </p>
+            <p>
+                <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu člana, datumu termina ili cijeni termina'>
+            </p>
+            <div class='appointment' v-for='appointment in filteredAppointments' :key='appointment.id'>
+                <p><strong>{{ appointment.appointment_at | momentt }}</strong></p>
+                <p class='indent'>
+                    <i class='fas fa-user'></i> {{ appointment.vacuum_appointment_group.member.name }}&nbsp;
+                    <i class='fas fa-money-bill-alt'></i> {{ appointment.vacuum_appointment_group.price_per_appointment }}
+                </p>
+                <p class='indent' v-if='!appointment.finished'>
+                    {{ getInfo(appointment) }}
+                </p>
+                <p class='indent'>
+                    <button class='form-btn' @click='goToMemberVacuum(appointment.vacuum_appointment_group.member.id, appointment.id)'>Detalji</button>
+                </p>
+            </div>
+        </template>
+
+        <modal v-if='newAppModal' @close='newAppModal = false'>
+            <span slot='header'>Novi termin</span>
+            <div slot='body'>
+                <p>Odaberi korisnika</p>
+                <input type='text' v-model='memSearchQuery' placeholder='Pretraži po imenu'>
+                <div class='member' v-for='member in searchedMembers' @click='goToMemberVacuum(member.id)'>
+                    <i class='fas fa-user'></i>&nbsp;{{ member.name }}
+                </div>
+            </div>
+        </modal>
+    </div>
+</template>
+
+<script>
+    import moment from 'moment'
+
+    export default {
+        props: ['appointments', 'members'],
+        data() {
+            return {
+                filter: 0,
+                sort: 0,
+                searchQuery: '',
+                memSearchQuery: '',
+                newAppModal: false
+            }
+        },
+        computed: {
+            sortedAppointments() {
+                switch(Number(this.sort)) {
+                    case 0:
+                        return _.orderBy(this.appointments, ['appointment_at'], ['asc'])
+                    case 1:
+                        return _.orderBy(this.appointments, ['appointment_at'], ['desc'])
+                    default:
+                        return this.appointments
+                }
+            },
+            searchedAppointments() {
+                let searchRegex = new RegExp(this.searchQuery, 'i')
+                if(this.searchQuery == '') {
+                    return this.sortedAppointments
+                }
+                return this.sortedAppointments.filter(a => {
+                    return searchRegex.test(moment(a.appointment_at).format('DD.MM.YYYY. H:mm:ss')) ||
+                            searchRegex.test(a.vacuum_appointment_group.price_per_appointment) ||
+                            searchRegex.test(a.vacuum_appointment_group.member.name)
+                })
+            },
+            filteredAppointments() {
+                switch(Number(this.filter)) {
+                    case 0:
+                        return this.searchedAppointments.filter(a => a.finished == 0)
+                    case 1:
+                        return this.searchedAppointments.filter(a => a.finished == 1)
+                    case 2:
+                        return this.searchedAppointments
+                    default:
+                        return this.searchedAppointments
+                }
+            },
+            searchedMembers() {
+                let searchRegex = new RegExp(this.memSearchQuery, 'i')
+                if(this.memSearchQuery == '') {
+                    return this.members
+                }
+                return this.members.filter(m => searchRegex.test(m.name))
+            }
+        },
+        methods: {
+            goToMemberVacuum(id, hash = null) {
+                let x = hash ? '#' + hash : ''
+                window.location.href = '/members/'+id+'/vacuum' + x
+            },
+            getInfo(appointment) {
+                let now =  moment().format('YYYY-MM-DD H:mm:ss')
+                let a = moment(appointment.appointment_at)
+
+                let diff = moment.duration(a.diff(now))
+
+                let d = diff.days()
+                let h = diff.hours()
+                let m = diff.minutes()
+
+                return d + ' d, ' + h + ' h, ' + m + ' m'
+            }
+        }
+    }
+</script>
+
+<style scoped>
+.appointment {
+    margin: 30px 0;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.appointment:last-child {
+    border: none;
+}
+.indent {
+    text-indent: 10px;
+}
+.member {
+    padding: 10px;
+    margin: 20px 0;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.member:last-child {
+    border: none;
+}
+</style>

@@ -14,10 +14,17 @@ class MemberVacuumController extends Controller
 {
     public function index(Request $request, Member $member)
     {
-        $member->load('VacuumAppointmentGroups');
+        $appointments = VacuumAppointment::with('VacuumAppointmentGroup.member')->orderBy('appointment_at', 'asc')->get();
+        $members = Member::orderBy('name', 'asc')->get();
+        return view('members.vacuum.index', compact('appointments', 'members'));
+    }
+
+    public function member(Request $request, Member $member)
+    {
+        $member->load('VacuumAppointmentGroups.VacuumAppointments.VacuumAppointmentMeasures');
         $parts = VacuumMeasureBodyPart::get();
 
-        return view('members.vacuum', compact('member', 'parts'));
+        return view('members.vacuum.member', compact('member', 'parts'));
     }
 
     public function createGroup(Request $request, Member $member)
@@ -38,7 +45,7 @@ class MemberVacuumController extends Controller
             'group' => $g->id,
         ]);
 
-        $g->load('VacuumAppointments');
+        $g->load('VacuumAppointments.VacuumAppointmentMeasures');
 
         return response()->json([
             'group' => $g,

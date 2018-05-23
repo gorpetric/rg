@@ -1,5 +1,5 @@
 <template>
-    <div class='appointment'>
+    <div class='appointment' :id='appointment.id'>
         <template v-if='!editing_appointment'>
             {{ appointment.appointment_at | momentt }}
             &nbsp;<i class='fas fa-check' v-show='appointment.finished'></i><br>
