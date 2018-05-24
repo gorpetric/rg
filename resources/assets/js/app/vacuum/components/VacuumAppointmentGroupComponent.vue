@@ -48,7 +48,7 @@
             createAppointment() {
                 this.loading = true
 
-                this.new_values.post('/members/'+this.member+'/vacuum/'+this.group.id).then(response => {
+                this.new_values.post('/members/vacuum/'+this.member+'/'+this.group.id).then(response => {
                     this.group.vacuum_appointments.unshift(response.appointment)
                     this.creating_new = false
                     this.loading = false

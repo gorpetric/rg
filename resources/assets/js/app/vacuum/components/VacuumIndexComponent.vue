@@ -1,7 +1,7 @@
 <template>
     <div class='container'>
-        <h2>Članovi <small>- vacuum termini</small></h2>
-        <p><button class='btn' @click='newAppModal = true'>Novi termin</button></p>
+        <h2>Vacuum termini</h2>
+        <p><button class='btn' @click='membersModal = true'>Vacuum članovi</button></p>
         <p v-if='!appointments.length'>Nema termina</p>
         <template v-else>
             <p>
@@ -16,31 +16,27 @@
                 </select>
             </p>
             <p>
-                <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu člana, datumu termina ili cijeni termina'>
+                <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu člana ili datumu termina'>
             </p>
             <div class='appointment' v-for='appointment in filteredAppointments' :key='appointment.id'>
                 <p><strong>{{ appointment.appointment_at | momentt }}</strong></p>
                 <p class='indent'>
-                    <i class='fas fa-user'></i> {{ appointment.vacuum_appointment_group.member.name }}&nbsp;
+                    <i class='fas' :class="{ 'fa-male': appointment.vacuum_appointment_group.vacuum_member.sex == 'M', 'fa-female': appointment.vacuum_appointment_group.vacuum_member.sex == 'F' }"></i> {{ appointment.vacuum_appointment_group.vacuum_member.name }}&nbsp;
                     <i class='fas fa-money-bill-alt'></i> {{ appointment.vacuum_appointment_group.price_per_appointment }}
                 </p>
                 <p class='indent' v-if='!appointment.finished'>
                     {{ getInfo(appointment) }}
                 </p>
                 <p class='indent'>
-                    <button class='form-btn' @click='goToMemberVacuum(appointment.vacuum_appointment_group.member.id, appointment.id)'>Detalji</button>
+                    <button class='form-btn' @click='goToMemberVacuum(appointment.vacuum_appointment_group.vacuum_member.id, appointment.id)'>Detalji</button>
                 </p>
             </div>
         </template>
 
-        <modal v-if='newAppModal' @close='newAppModal = false'>
-            <span slot='header'>Novi termin</span>
+        <modal v-if='membersModal' @close='membersModal = false'>
+            <span slot='header'>Vacuum članovi</span>
             <div slot='body'>
-                <p>Odaberi korisnika</p>
-                <input type='text' v-model='memSearchQuery' placeholder='Pretraži po imenu'>
-                <div class='member' v-for='member in searchedMembers' @click='goToMemberVacuum(member.id)'>
-                    <i class='fas fa-user'></i>&nbsp;{{ member.name }}
-                </div>
+                <vacuum-members :membersprop='members'></vacuum-members>
             </div>
         </modal>
     </div>
@@ -50,14 +46,14 @@
     import moment from 'moment'
 
     export default {
-        props: ['appointments', 'members'],
+        props: ['appointments', 'membersprop'],
         data() {
             return {
+                members: this.membersprop,
                 filter: 0,
                 sort: 0,
                 searchQuery: '',
-                memSearchQuery: '',
-                newAppModal: false
+                membersModal: false
             }
         },
         computed: {
@@ -78,8 +74,7 @@
                 }
                 return this.sortedAppointments.filter(a => {
                     return searchRegex.test(moment(a.appointment_at).format('DD.MM.YYYY. H:mm:ss')) ||
-                            searchRegex.test(a.vacuum_appointment_group.price_per_appointment) ||
-                            searchRegex.test(a.vacuum_appointment_group.member.name)
+                            searchRegex.test(a.vacuum_appointment_group.vacuum_member.name)
                 })
             },
             filteredAppointments() {
@@ -93,19 +88,12 @@
                     default:
                         return this.searchedAppointments
                 }
-            },
-            searchedMembers() {
-                let searchRegex = new RegExp(this.memSearchQuery, 'i')
-                if(this.memSearchQuery == '') {
-                    return this.members
-                }
-                return this.members.filter(m => searchRegex.test(m.name))
             }
         },
         methods: {
             goToMemberVacuum(id, hash = null) {
                 let x = hash ? '#' + hash : ''
-                window.location.href = '/members/'+id+'/vacuum' + x
+                window.location.href = '/members/vacuum/'+id + x
             },
             getInfo(appointment) {
                 let now =  moment().format('YYYY-MM-DD H:mm:ss')
@@ -133,14 +121,5 @@
 }
 .indent {
     text-indent: 10px;
-}
-.member {
-    padding: 10px;
-    margin: 20px 0;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(0,0,0,.06);
-}
-.member:last-child {
-    border: none;
 }
 </style>

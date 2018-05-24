@@ -4,5 +4,5 @@
 @section('description'){{ 'Royal Gym Brezje - Members vacuum' }}@stop
 
 @section('content')
-<vacuum-index :appointments="{{ $appointments }}" :members="{{ $members }}"></vacuum-index>
+<vacuum-index :appointments="{{ $appointments }}" :membersprop="{{ $members }}"></vacuum-index>
 @stop

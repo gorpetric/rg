@@ -15,13 +15,13 @@ class CreateVacuumAppointmentGroupsTable extends Migration
     {
         Schema::create('vacuum_appointment_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('member_id')->unsigned();
+            $table->integer('vacuum_member_id')->unsigned();
             $table->integer('num_of_appointments')->unsigned();
             $table->integer('price_per_appointment')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
+            $table->foreign('vacuum_member_id')->references('id')->on('vacuum_members')->onDelete('cascade');
         });
     }
 

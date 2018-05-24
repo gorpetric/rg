@@ -2,9 +2,9 @@
 
 namespace App\Models\Members\Vacuum;
 
-use App\Models\Members\Member;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Members\Vacuum\VacuumMember;
 use App\Models\Members\Vacuum\VacuumAppointment;
 
 class VacuumAppointmentGroup extends Model
@@ -15,11 +15,9 @@ class VacuumAppointmentGroup extends Model
         'num_of_appointments', 'price_per_appointment',
     ];
 
-    //protected $with = ['VacuumAppointments'];
-
-    public function member()
+    public function VacuumMember()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(VacuumMember::class);
     }
 
     public function VacuumAppointments()

@@ -16,7 +16,7 @@ class CreateVacuumAppointmentsTable extends Migration
         Schema::create('vacuum_appointments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('vacuum_appointment_group_id')->unsigned();
-            $table->timestamp('appointment_at');
+            $table->timestamp('appointment_at')->nullable();
             $table->boolean('finished')->default(0);
             $table->timestamps();
             $table->softDeletes();

@@ -128,7 +128,7 @@
 
                 this.loading = true
 
-                this.new_measurement.post('/members/'+this.member+'/vacuum/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id).then(response => {
+                this.new_measurement.post('/members/vacuum/'+this.member+'/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id).then(response => {
                     this.appointment.vacuum_appointment_measures.push(response.before)
                     this.appointment.vacuum_appointment_measures.push(response.after)
                     this.new_measurement.part = 0
@@ -150,7 +150,7 @@
                 if(b) ids.push(b.id)
                 if(a) ids.push(a.id)
 
-                axios.post('/members/'+this.member+'/vacuum/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/delete-measure', {
+                axios.post('/members/vacuum/'+this.member+'/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/delete-measure', {
                     ids: ids
                 }).then(response => {
                     let bi = this.appointment.vacuum_appointment_measures.indexOf(b)
@@ -162,7 +162,7 @@
             completeAppointment(fin = true) {
                 if(!confirm('Sigurno?')) return
 
-                axios.post('/members/'+this.member+'/vacuum/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/complete-appointment', {
+                axios.post('/members/vacuum/'+this.member+'/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/complete-appointment', {
                     finished: fin
                 }).then(response => {
                     this.appointment.finished = fin ? 1 : 0
@@ -180,7 +180,7 @@
                 let date = this.edit_values.date
                 let time = this.edit_values.time
 
-                this.edit_values.post('/members/'+this.member+'/vacuum/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/edit-appointment').then(response => {
+                this.edit_values.post('/members/vacuum/'+this.member+'/'+this.appointment.vacuum_appointment_group_id+'/'+this.appointment.id+'/edit-appointment').then(response => {
                     this.appointment.appointment_at = date + ' ' + time
                     this.editing_appointment = false
                     this.loading = false

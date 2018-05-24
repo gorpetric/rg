@@ -51,7 +51,7 @@
             createNewGroup() {
                 this.loading = true
 
-                this.new_values.post('/members/'+this.member.id+'/vacuum').then(response => {
+                this.new_values.post('/members/vacuum/'+this.member.id).then(response => {
                     this.member.vacuum_appointment_groups.unshift(response.group)
                     this.creating_new_group = false
                     this.loading = false

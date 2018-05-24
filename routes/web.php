@@ -33,14 +33,19 @@ Route::group([
     Route::post('new', 'Members\MembersController@postNewMember');
     Route::get('stats/monthly', 'Members\MemberPaymentsController@getMonthlyStats');
 
-    Route::get('vacuum', 'Members\MemberVacuumController@index')->name('members.vacuum.index');
-    Route::get('{member}/vacuum', 'Members\MemberVacuumController@member');
-    Route::post('{member}/vacuum', 'Members\MemberVacuumController@createGroup');
-    Route::post('{member}/vacuum/{group}', 'Members\MemberVacuumController@createAppointment');
-    Route::post('{member}/vacuum/{group}/{appointment}', 'Members\MemberVacuumController@createMeasurement');
-    Route::post('{member}/vacuum/{group}/{appointment}/delete-measure', 'Members\MemberVacuumController@deleteMeasurement');
-    Route::post('{member}/vacuum/{group}/{appointment}/complete-appointment', 'Members\MemberVacuumController@completeAppointment');
-    Route::post('{member}/vacuum/{group}/{appointment}/edit-appointment', 'Members\MemberVacuumController@editAppointment');
+    Route::group([
+        'prefix' => 'vacuum'
+    ], function() {
+        Route::get('', 'Members\MemberVacuumController@index')->name('members.vacuum.index');
+        Route::post('', 'Members\MemberVacuumController@createMember');
+        Route::get('{member}', 'Members\MemberVacuumController@member');
+        Route::post('{member}', 'Members\MemberVacuumController@createGroup');
+        Route::post('{member}/{group}', 'Members\MemberVacuumController@createAppointment');
+        Route::post('{member}/{group}/{appointment}', 'Members\MemberVacuumController@createMeasurement');
+        Route::post('{member}/{group}/{appointment}/delete-measure', 'Members\MemberVacuumController@deleteMeasurement');
+        Route::post('{member}/{group}/{appointment}/complete-appointment', 'Members\MemberVacuumController@completeAppointment');
+        Route::post('{member}/{group}/{appointment}/edit-appointment', 'Members\MemberVacuumController@editAppointment');
+    });
 });
 
 Route::group([

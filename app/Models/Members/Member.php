@@ -3,7 +3,6 @@
 namespace App\Models\Members;
 
 use App\Models\Members\MemberPayment;
-use App\Models\Members\Vacuum\VacuumAppointmentGroup;
 use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
@@ -12,16 +11,9 @@ class Member extends Model
 
     protected $dates = ['joined_at'];
 
-    //protected $with = ['payments'];
-
     public function payments()
     {
         return $this->hasMany(MemberPayment::class)->orderBy('valid_until', 'desc');
-    }
-
-    public function VacuumAppointmentGroups()
-    {
-        return $this->hasMany(VacuumAppointmentGroup::class)->orderBy('id', 'desc');
     }
 
     public function scopeActive($query)

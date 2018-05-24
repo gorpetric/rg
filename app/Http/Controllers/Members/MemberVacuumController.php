@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Members;
 
 use Illuminate\Http\Request;
-use App\Models\Members\Member;
 use App\Http\Controllers\Controller;
+use App\Models\Members\Vacuum\VacuumMember;
 use App\Models\Members\Vacuum\VacuumAppointment;
 use App\Models\Members\Vacuum\VacuumMeasureBodyPart;
 use App\Models\Members\Vacuum\VacuumAppointmentGroup;
@@ -12,14 +12,35 @@ use App\Models\Members\Vacuum\VacuumAppointmentMeasure;
 
 class MemberVacuumController extends Controller
 {
-    public function index(Request $request, Member $member)
+    public function index()
     {
-        $appointments = VacuumAppointment::with('VacuumAppointmentGroup.member')->orderBy('appointment_at', 'asc')->get();
-        $members = Member::orderBy('name', 'asc')->get();
+        $appointments = VacuumAppointment::with('VacuumAppointmentGroup.VacuumMember')->orderBy('appointment_at', 'asc')->get();
+        $members = VacuumMember::orderBy('name', 'asc')->get();
         return view('members.vacuum.index', compact('appointments', 'members'));
     }
 
-    public function member(Request $request, Member $member)
+    public function createMember(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'address' => 'max:250',
+            'phone' => 'max:50',
+            'sex' => 'required|in:M,F',
+        ]);
+
+        $member = VacuumMember::create([
+            'name' => $request->name,
+            'address' => $request->address ?: null,
+            'phone' => $request->phone ?: null,
+            'sex' => $request->sex,
+        ]);
+
+        return response()->json([
+            'member' => $member,
+        ]);
+    }
+
+    public function member(Request $request, VacuumMember $member)
     {
         $member->load('VacuumAppointmentGroups.VacuumAppointments.VacuumAppointmentMeasures');
         $parts = VacuumMeasureBodyPart::get();
@@ -27,7 +48,7 @@ class MemberVacuumController extends Controller
         return view('members.vacuum.member', compact('member', 'parts'));
     }
 
-    public function createGroup(Request $request, Member $member)
+    public function createGroup(Request $request, VacuumMember $member)
     {
         $this->validate($request, [
             'num_of_appointments' => 'required|integer',
@@ -52,7 +73,7 @@ class MemberVacuumController extends Controller
         ]);
     }
 
-    public function createAppointment(Request $request, Member $member, VacuumAppointmentGroup $group)
+    public function createAppointment(Request $request, VacuumMember $member, VacuumAppointmentGroup $group)
     {
         $this->validate($request, [
             'date' => 'required|date',
@@ -78,7 +99,7 @@ class MemberVacuumController extends Controller
         ]);
     }
 
-    public function createMeasurement(Request $request, Member $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
+    public function createMeasurement(Request $request, VacuumMember $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
     {
         $this->validate($request, [
             'part' => 'required|exists:vacuum_measure_body_parts,id',
@@ -112,7 +133,7 @@ class MemberVacuumController extends Controller
         ]);
     }
 
-    public function deleteMeasurement(Request $request, Member $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
+    public function deleteMeasurement(Request $request, VacuumMember $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
     {
         $this->validate($request, [
             'ids.*' => 'exists:vacuum_appointment_measures,id'
@@ -134,7 +155,7 @@ class MemberVacuumController extends Controller
         return response(null, 200);
     }
 
-    public function completeAppointment(Request $request, Member $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
+    public function completeAppointment(Request $request, VacuumMember $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
     {
         $this->validate($request, [
             'finished' => 'required|boolean'
@@ -156,7 +177,7 @@ class MemberVacuumController extends Controller
         return response(null, 200);
     }
 
-    public function editAppointment(Request $request, Member $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
+    public function editAppointment(Request $request, VacuumMember $member, VacuumAppointmentGroup $group, VacuumAppointment $appointment)
     {
         $this->validate($request, [
             'date' => 'required|date',
