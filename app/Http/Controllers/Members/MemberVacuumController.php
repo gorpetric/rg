@@ -35,6 +35,11 @@ class MemberVacuumController extends Controller
             'sex' => $request->sex,
         ]);
 
+        logdb('Vacuum member created', [
+            'by' => auth()->user()->id,
+            'member' => $member->id,
+        ]);
+
         return response()->json([
             'member' => $member,
         ]);
