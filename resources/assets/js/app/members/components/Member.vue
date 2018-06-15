@@ -1,17 +1,16 @@
 <template>
     <div class='member-block' :class='determineColor()'>
         <div class='main' @click.prevent='toggleInfo'>
+            <i class='fas' :class="{ 'fa-male': member.sex == 'M', 'fa-female': member.sex == 'F' }"></i>&nbsp;
             {{ member.name }}
             <small v-if='member.active'>( {{ getLatestValidUntil() | moment }} ) ( {{ getDaysDifference() }} )</small>
         </div>
         <div class='info' :class='showInfo()'>
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
             Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
-            Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
-            <p class='text-center'>
-                <button class='btn' @click='editMemberShowing = 1' title='Uredi'><i class='fas fa-edit'></i></button>
-                <button class='btn' @click='paymentsShowing = 1' title='Plaćanja'><i class='fas fa-euro-sign'></i></button>
-            </p>
+            Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br><br>
+            <button class='button' @click='editMemberShowing = 1'><i class='fas fa-edit'></i>&nbsp;Uredi</button>
+            <button class='button' @click='paymentsShowing = 1'><i class='fas fa-euro-sign'></i>&nbsp;Plaćanja</button>
         </div>
         <modal v-if='paymentsShowing' @close='paymentsShowing = 0'>
             <span slot='header'>{{ member.name }} - plaćanja<span v-if='member.active'> ( {{ getDaysDifference() }} )</span></span>

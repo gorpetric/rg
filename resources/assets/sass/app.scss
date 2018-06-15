@@ -1,7 +1,7 @@
 @import 'vendor/normalize';
 @import 'vendor/font-awesome';
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700');
-@import 'variables';
+@import '~bulma/bulma';
 
 *, *:before, *:after{
   outline: none;
@@ -11,14 +11,11 @@
 }
 
 body, html {
-    min-height: 100%;
+    //min-height: 100%;
 }
 
 body {
-    font-family: $main-font;
-    font-size: 18px;
-    //background-color: $black;
-    //color: white;
+    //font-family: 'Roboto', sans-serif;
 
     &.modal-open {
         overflow: hidden;
@@ -26,8 +23,3 @@ body {
 }
 
 @import 'stuff';
-@import 'buttons';
-@import 'form';
-@import 'table';
-@import 'modal';
-@import 'nav';

@@ -2,30 +2,98 @@
     <div>
         <div v-if='!toggleNewPayment && !deletingPaymentId' style='margin-bottom:10px'><a href='#' @click.prevent='toggleNewPayment = 1'>Novo plaćanje</a><hr></div>
         <div v-if='toggleNewPayment' style='margin-bottom:10px'>
-            *Cijena <input type='text' style='width:auto' v-model='form.value' maxlength='3'><br><br>
-            <span class='error-block' v-if='form.errors.has("value")'>{{ form.errors.get('value') }}</span>
-            *Vrijedi od <input type='date' v-model='form.valid_from'><br><br>
-            <span class='error-block' v-if='form.errors.has("valid_from")'>{{ form.errors.get('valid_from') }}</span>
-            *Vrijedi do <input type='date' v-model='form.valid_until'><br><br>
-            <span class='error-block' v-if='form.errors.has("valid_until")'>{{ form.errors.get('valid_until') }}</span>
-            Napomena <input type='text' v-model='form.description' placeholder='Opcionalno...'><br><br>
-            <span class='error-block' v-if='form.errors.has("description")'>{{ form.errors.get('description') }}</span>
-            <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>&nbsp;
-            <button class='form-btn' :disabled='loading' @click.prevent='addNewPayment()'>Dodaj</button>
+            <div class='field is-horizontal'>
+                <div class='field-label'>
+                    <label class='label'>* Cijena</label>
+                </div>
+                <div class='field-body'>
+                    <div class='field'>
+                        <div class='control'>
+                            <input type='text' class='input' v-model='form.value' maxlength='3'>
+                        </div>
+                        <span class='help is-danger' v-if='form.errors.has("value")'>{{ form.errors.get('value') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='field is-horizontal'>
+                <div class='field-label'>
+                    <label class='label'>* Vrijedi od</label>
+                </div>
+                <div class='field-body'>
+                    <div class='field'>
+                        <div class='control'>
+                            <input type='date' class='input' v-model='form.valid_from'>
+                        </div>
+                        <span class='help is-danger' v-if='form.errors.has("valid_from")'>{{ form.errors.get('valid_from') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='field is-horizontal'>
+                <div class='field-label'>
+                    <label class='label'>* Vrijedi do</label>
+                </div>
+                <div class='field-body'>
+                    <div class='field'>
+                        <div class='control'>
+                            <input type='date' class='input' v-model='form.valid_until'>
+                        </div>
+                        <span class='help is-danger' v-if='form.errors.has("valid_until")'>{{ form.errors.get('valid_until') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='field is-horizontal'>
+                <div class='field-label'>
+                    <label class='label'>Napomena</label>
+                </div>
+                <div class='field-body'>
+                    <div class='field'>
+                        <div class='control'>
+                            <input type='text' class='input' v-model='form.description' placeholder='Opcionalno...'>
+                        </div>
+                        <span class='help is-danger' v-if='form.errors.has("description")'>{{ form.errors.get('description') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='field is-horizontal'>
+                <div class='field-label'></div>
+                <div class='field-body'>
+                    <div class='field is-grouped'>
+                        <p class='control'>
+                            <button class='button' :disabled='loading' @click.prevent='addNewPayment()'>Dodaj</button>
+                        </p>
+                        <p class='control'>
+                            <a href='#' @click.prevent='toggleNewPayment = 0'>Odustani</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
             <hr>
         </div>
         <p>Ukupno: {{ getPaymentsTotal() | money }} kn</p>
-        <div v-for='(payment, index) in member.payments' class='memberPayment' :class="{ 'is-about-to-delete' : deletingPaymentId == payment.id }">
-            Cijena: <strong>{{ payment.value }}</strong><br>
-            Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
-            Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
-            <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
-            <div v-if='index == 0 && !deletingPaymentId && !toggleNewPayment'><a href='#' @click.prevent='deletingPaymentId = payment.id'>Obriši</a></div>
-            <div v-if='index == 0 && deletingPaymentId == payment.id && !toggleNewPayment'>
-                <span>Sigurno?</span>
-                <a href='#' @click.prevent='deletingPaymentId = null'>Odustani</a>
-                <button class='form-btn' @click.prevent='deletePayment(payment)'>Da, obriši</button>
-            </div>
+
+        <div class='table-container'>
+            <table class='table is-striped is-hoverable is-fullwidth'>
+                <tbody>
+                    <tr v-for='(payment, index) in member.payments'>
+                        <td>
+                            Cijena: <strong>{{ payment.value }}</strong><br>
+                            Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
+                            Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
+                            <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
+                            <div v-if='index == 0 && !deletingPaymentId && !toggleNewPayment'><a href='#' @click.prevent='deletingPaymentId = payment.id'>Obriši</a></div>
+                            <div v-if='index == 0 && deletingPaymentId == payment.id && !toggleNewPayment'>
+                                <span>Sigurno?</span>
+                                <a href='#' @click.prevent='deletingPaymentId = null'>Odustani</a>
+                                <button class='button' @click.prevent='deletePayment(payment)'>Da, obriši</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -109,14 +177,3 @@
         }
     }
 </script>
-
-<style scoped lang=sass>
-.memberPayment
-    padding: 10px 0
-
-.memberPayment:nth-child(odd)
-    background: #f5f5f5
-
-.is-about-to-delete
-    background: transparentize(red, .8) !important
-</style>

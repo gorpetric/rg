@@ -1,14 +1,13 @@
 <template>
     <transition name='modal-transition'>
-    <div class='modal-mask' @click='close()'>
-        <div class='modal-container' @click.stop>
-            <div class='modal-header'>
-                <slot name='header'></slot>
-                <i class='fas fa-times' @click='close' title='Close'></i>
-            </div>
-            <div class='modal-inner'>
-                <slot name='body'></slot>
-            </div>
+    <div class='modal is-active'>
+        <div class='modal-background' @click='close()'></div>
+        <div class='modal-card'>
+            <header class='modal-card-head'>
+                <span class='modal-card-title'><slot name='header'></slot></span>
+                <button class='delete' aria-label='close' @click='close()'></button>
+            </header>
+            <section class='modal-card-body'><slot name='body'></slot></section>
         </div>
     </div>
     </transition>
@@ -16,11 +15,6 @@
 
 <script>
     export default {
-        data() {
-            return {
-
-            }
-        },
         methods: {
             close() {
                 document.body.classList.remove('modal-open')

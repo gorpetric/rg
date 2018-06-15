@@ -1,37 +1,43 @@
 <template>
-    <div class='container'>
-        <h2>Vacuum termini</h2>
-        <p><button class='btn' @click='membersModal = true'>Vacuum članovi</button></p>
-        <p v-if='!appointments.length'>Nema termina</p>
-        <template v-else>
-            <p>
-                <select v-model='filter'>
-                    <option value=0>Nezavršeni</option>
-                    <option value=1>Završeni</option>
-                    <option value=2>Svi</option>
-                </select>
-                <select v-model='sort'>
-                    <option value=0>Najstariji</option>
-                    <option value=1>Najnoviji</option>
-                </select>
+    <div class='section container content'>
+        <h1 class='title is-3'>Vacuum termini</h1>
+        <p><button class='button is-medium is-dark' @click='membersModal = true'>Vacuum članovi</button></p>
+
+        <div class='field has-addons'>
+            <p class='control'>
+                <span class='select'>
+                    <select v-model='filter'>
+                        <option value=0>Nezavršeni</option>
+                        <option value=1>Završeni</option>
+                        <option value=2>Svi</option>
+                    </select>
+                </span>
             </p>
-            <p>
-                <input type='text' v-model='searchQuery' placeholder='Pretraži po imenu člana ili datumu termina'>
+            <p class='control'>
+                <span class='select'>
+                    <select v-model='sort'>
+                        <option value=0>Najstariji</option>
+                        <option value=1>Najnoviji</option>
+                    </select>
+                </span>
             </p>
-            <div class='appointment' v-for='appointment in filteredAppointments' :key='appointment.id'>
-                <p><strong>{{ appointment.appointment_at | momentt }}</strong></p>
-                <p class='indent'>
-                    <i class='fas' :class="{ 'fa-male': appointment.vacuum_appointment_group.vacuum_member.sex == 'M', 'fa-female': appointment.vacuum_appointment_group.vacuum_member.sex == 'F' }"></i> {{ appointment.vacuum_appointment_group.vacuum_member.name }}&nbsp;
-                    <i class='fas fa-money-bill-alt'></i> {{ appointment.vacuum_appointment_group.price_per_appointment }}
-                </p>
-                <p class='indent' v-if='!appointment.finished'>
-                    {{ getInfo(appointment) }}
-                </p>
-                <p class='indent'>
-                    <button class='form-btn' @click='goToMemberVacuum(appointment.vacuum_appointment_group.vacuum_member.id, appointment.id)'>Detalji</button>
-                </p>
-            </div>
-        </template>
+        </div>
+
+        <input type='text' class='input' v-model='searchQuery' placeholder='Pretraži po imenu člana ili datumu termina'>
+
+        <div class='appointment' v-for='appointment in filteredAppointments' :key='appointment.id'>
+            <p><strong>{{ appointment.appointment_at | momentt }}</strong></p>
+            <p class='indent'>
+                <i class='fas' :class="{ 'fa-male': appointment.vacuum_appointment_group.vacuum_member.sex == 'M', 'fa-female': appointment.vacuum_appointment_group.vacuum_member.sex == 'F' }"></i> {{ appointment.vacuum_appointment_group.vacuum_member.name }}&nbsp;
+                <i class='fas fa-money-bill-alt'></i> {{ appointment.vacuum_appointment_group.price_per_appointment }}
+            </p>
+            <p class='indent' v-if='!appointment.finished'>
+                {{ getInfo(appointment) }}
+            </p>
+            <p class='indent'>
+                <button class='button' @click='goToMemberVacuum(appointment.vacuum_appointment_group.vacuum_member.id, appointment.id)'>Detalji</button>
+            </p>
+        </div>
 
         <modal v-if='membersModal' @close='membersModal = false'>
             <span slot='header'>Vacuum članovi</span>
@@ -114,6 +120,7 @@
 <style scoped>
 .appointment {
     margin: 30px 0;
+    padding: 20px;
     border-bottom: 1px solid rgba(0,0,0,.06);
 }
 .appointment:last-child {

@@ -10,21 +10,25 @@
             <a href='#' v-else @click.prevent='completeAppointment(false)'>Označi termin kao nezavršen</a>
         </template>
         <template v-else>
-            <div class='form-group'>
-                <input type='date' v-model='edit_values.date'>
-                <input type='time' v-model='edit_values.time'>
-                <span class='error-block' v-if='edit_values.errors.has("date")'>{{ edit_values.errors.get('date') }}</span>
-                <span class='error-block' v-if='edit_values.errors.has("time")'>{{ edit_values.errors.get('time') }}</span>
+            <div class='field has-addons'>
+                <p class='control'>
+                    <input type='date' class='input' v-model='edit_values.date'>
+                </p>
+                <p class='control'>
+                    <input type='time' class='input' v-model='edit_values.time'>
+                </p>
             </div>
+            <span class='help is-danger' v-if='edit_values.errors.has("date")'>{{ edit_values.errors.get('date') }}</span>
+            <span class='help is-danger' v-if='edit_values.errors.has("time")'>{{ edit_values.errors.get('time') }}</span>
             <p>
-                <button class='form-btn' :disabled='loading' @click='editAppointment'>Promijeni</button>
+                <button class='button' :disabled='loading' @click='editAppointment'>Promijeni</button>
                 <a href='#' @click.prevent='editing_appointment = false'>Odustani</a>
             </p>
         </template>
         <hr>
         <div class='measure'>
-            <div class='table-responsive'>
-                <table style='width:100%'>
+            <div class='table-container'>
+                <table class='table is-bordered is-striped is-hoverable is-fullwidth'>
                     <thead>
                         <tr>
                             <th></th>
@@ -42,16 +46,18 @@
                         </tr>
                         <tr v-if='creating_new_measurement'>
                             <td>
-                                <select v-model='new_measurement.part'>
-                                    <option disabled value=0>Odaberi...</option>
-                                    <option v-for='part in leftOutParts' :value='part.id'>{{ part.part }} ({{ part.unit }})</option>
-                                </select>
+                                <span class='select is-fullwidth'>
+                                    <select v-model='new_measurement.part'>
+                                        <option disabled value=0>Odaberi...</option>
+                                        <option v-for='part in leftOutParts' :value='part.id'>{{ part.part }} ({{ part.unit }})</option>
+                                    </select>
+                                </span>
                             </td>
                             <td>
-                                <input type='number' step='0.01' :pattern='pattern' v-model='new_measurement.before'>
+                                <input type='number' class='input' step='0.01' :pattern='pattern' v-model='new_measurement.before'>
                             </td>
                             <td>
-                                <input type='number' step='0.01' :pattern='pattern' v-model='new_measurement.after'>
+                                <input type='number' class='input' step='0.01' :pattern='pattern' v-model='new_measurement.after'>
                             </td>
                             <td>
                                 <a href='#' @click.prevent='createMeasurement'>Spremi</a>&nbsp;|&nbsp;
@@ -176,6 +182,8 @@
             },
             editAppointment() {
                 this.loading = true
+
+                if(this.edit_values.time.length == 5) this.edit_values.time = this.edit_values.time + ':00'
 
                 let date = this.edit_values.date
                 let time = this.edit_values.time

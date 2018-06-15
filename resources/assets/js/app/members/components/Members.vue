@@ -1,42 +1,44 @@
 <template>
-    <div v-if='loading' class='loader'></div>
-    <section id='members' v-else>
-        <input type='text' v-model='searchQuery' placeholder='Petraži po imenu'>
-        <div class='members-controls'>
-            <p>
-                Ukupno članova: {{ members.active.length + members.inactive.length }}<br>
-                <label for='filter-active'>Aktivni: {{ members.active.length }}</label>
-                <input type='checkbox' v-model='filter.active' id='filter-active'><br>
-                <label for='filter-inactive'>Neaktivni: {{ members.inactive.length }}</label>
-                <input type='checkbox' v-model='filter.inactive' id='filter-inactive'><br>
-                <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
-            </p>
-            <button class='btn' @click='newMemberShowing = 1' title='Novi član'><i class='fas fa-user-plus'></i></button>
-            <button class='btn' @click='statsShowing = 1' title='Statistika'><i class='fas fa-list-ol'></i></button>
+    <div class='section container content'>
+        <input type='text' class='input' v-model='searchQuery' placeholder='Petraži po imenu'>
+        <div v-if='loading' class='loader'></div>
+        <div class='columns' style='margin-top:20px' v-else>
+            <div class='column members-controls'>
+                <p>
+                    Ukupno članova: {{ members.active.length + members.inactive.length }}<br>
+                    <label for='filter-active'>Aktivni: {{ members.active.length }}</label>
+                    <input type='checkbox' v-model='filter.active' id='filter-active'><br>
+                    <label for='filter-inactive'>Neaktivni: {{ members.inactive.length }}</label>
+                    <input type='checkbox' v-model='filter.inactive' id='filter-inactive'><br>
+                    <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
+                </p>
+                <button class='button' @click='newMemberShowing = 1'><i class='fas fa-user-plus'></i>&nbsp;Novi član</button>
+                <button class='button' @click='statsShowing = 1'><i class='fas fa-list-ol'></i>&nbsp;Statistika</button>
+            </div>
+            <div class='column is-three-quarters members-list'>
+                <div class='active' v-show='filter.active && searchedActive.length'>
+                    <h2>Aktivni</h2>
+                    <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
+                </div>
+                <div class='inactive' v-show='filter.inactive && searchedInactive.length'>
+                    <h2>Neaktivni</h2>
+                    <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
+                </div>
+            </div>
+            <modal v-if='newMemberShowing' @close='newMemberShowing = 0'>
+                <span slot='header'>Novi član</span>
+                <div slot='body'>
+                    <new-or-edit-member></new-or-edit-member>
+                </div>
+            </modal>
+            <modal v-if='statsShowing' @close='statsShowing = 0'>
+                <span slot='header'>Statistika</span>
+                <div slot='body'>
+                    <member-payments-monthly-stats></member-payments-monthly-stats>
+                </div>
+            </modal>
         </div>
-        <div class='members-list'>
-            <div class='active' v-show='filter.active && searchedActive.length'>
-                <h2>Aktivni</h2>
-                <member v-for='member in searchedActive' :key='member.id' :member='member'></member>
-            </div>
-            <div class='inactive' v-show='filter.inactive && searchedInactive.length'>
-                <h2>Neaktivni</h2>
-                <member v-for='member in searchedInactive' :key='member.id' :member='member'></member>
-            </div>
-        </div>
-        <modal v-if='newMemberShowing' @close='newMemberShowing = 0'>
-            <span slot='header'>Novi član</span>
-            <div slot='body'>
-                <new-or-edit-member></new-or-edit-member>
-            </div>
-        </modal>
-        <modal v-if='statsShowing' @close='statsShowing = 0'>
-            <span slot='header'>Statistika</span>
-            <div slot='body'>
-                <member-payments-monthly-stats></member-payments-monthly-stats>
-            </div>
-        </modal>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -80,7 +82,8 @@
                     return this.sortedActive
                 }
                 return this.sortedActive.filter((member) => {
-                    return searchRegex.test(member.name)
+                    return searchRegex.test(member.name) ||
+                            searchRegex.test(member.id)
                 })
             },
             searchedInactive() {
@@ -105,27 +108,8 @@
 </script>
 
 <style scoped lang=sass>
-#members
-    display: flex
-    flex-wrap: wrap
-
-    .members-controls
-        margin-right: 20px
-
-        .btn
-            width: 100%
-            margin: 10px 0
-
-    .members-list
-        flex-grow: 2
-
-    @media(max-width: 650px)
-        display: block
-
-        .members-controls
-            margin: 0
-
-            .btn
-                width: auto
-                margin: 10px
+.members-controls
+    .button
+        width: 100%
+        margin: 10px 0
 </style>

@@ -6,14 +6,18 @@
             <hr v-show='canCreateAppointment()'>
             <a href='#' v-if='canCreateAppointment() && !creating_new' @click.prevent='creating_new = true'>Novi termin</a>
             <template v-if='creating_new'>
-                <div class='form-group'>
-                    <input type='date' v-model='new_values.date'>
-                    <input type='time' v-model='new_values.time'>
-                    <span class='error-block' v-if='new_values.errors.has("date")'>{{ new_values.errors.get('date') }}</span>
-                    <span class='error-block' v-if='new_values.errors.has("time")'>{{ new_values.errors.get('time') }}</span>
+                <div class='field has-addons'>
+                    <p class='control'>
+                        <input type='date' class='input' v-model='new_values.date'>
+                    </p>
+                    <p class='control'>
+                        <input type='time' class='input' v-model='new_values.time'>
+                    </p>
                 </div>
+                <span class='help is-danger' v-if='new_values.errors.has("date")'>{{ new_values.errors.get('date') }}</span>
+                <span class='help is-danger' v-if='new_values.errors.has("time")'>{{ new_values.errors.get('time') }}</span>
                 <p>
-                    <button class='form-btn' :disabled='loading' @click='createAppointment'>Kreiraj termin</button>
+                    <button class='button' :disabled='loading' @click='createAppointment'>Kreiraj termin</button>
                     <a href='#' @click.prevent='creating_new = false'>Odustani</a>
                 </p>
             </template>

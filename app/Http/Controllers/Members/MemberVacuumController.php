@@ -186,11 +186,11 @@ class MemberVacuumController extends Controller
     {
         $this->validate($request, [
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
+            'time' => 'required|date_format:H:i:s',
         ]);
 
         $appointment->update([
-            'appointment_at' => $request->date . $request->time . ':00',
+            'appointment_at' => $request->date . $request->time,
         ]);
 
         logdb('Vacuum appointment edited', [

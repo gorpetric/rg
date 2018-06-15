@@ -1,9 +1,9 @@
 <template>
-    <div class='container'>
-        <h1>Logs</h1>
-        <p><input type='text' v-model='searchQuery' placeholder='Quick search'></p>
-        <div class='table-responsive'>
-            <table>
+    <div class='container content'>
+        <h1 class='title is-3'>Logs</h1>
+        <p><input type='text' class='input' v-model='searchQuery' placeholder='Quick search'></p>
+        <div class='table-container'>
+            <table class='table is-bordered is-striped is-hoverable is-fullwidth'>
                 <thead>
                     <tr>
                         <th scope="col" v-for='column in columns' @click='sortBy(column)' style='cursor: pointer'>

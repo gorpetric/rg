@@ -2,39 +2,58 @@
     <p v-if='isSuccess' style='color: green'>Uspješno!</p>
     <div v-else>
         <form autocomplete='off' @submit.prevent='submit'>
-            <div class='form-group'>
-                <label for='name'>* Ime</label>
-                <input type='text' id='name' v-model='form.name'>
-                <span class='error-block' v-if='form.errors.has("name")'>{{ form.errors.get('name') }}</span>
+            <div class='field'>
+                <label class='label' for='name'>* Ime</label>
+                <div class='control'>
+                    <input type='text' class='input' id='name' v-model='form.name' placeholder='Ime'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("name")'>{{ form.errors.get('name') }}</span>
             </div>
-            <div class='form-group'>
-                <label for='address'>Adresa</label>
-                <input type='text' id='address' v-model='form.address'>
-                <span class='error-block' v-if='form.errors.has("address")'>{{ form.errors.get('address') }}</span>
+            <div class='field'>
+                <label class='label' for='address'>Adresa</label>
+                <div class='control'>
+                    <input type='text' class='input' id='address' v-model='form.address'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("address")'>{{ form.errors.get('address') }}</span>
             </div>
-            <div class='form-group'>
-                <label for='phone'>Kontakt broj</label>
-                <input type='text' id='phone' v-model='form.phone'>
-                <span class='error-block' v-if='form.errors.has("phone")'>{{ form.errors.get('phone') }}</span>
+            <div class='field'>
+                <label class='label' for='phone'>Kontakt broj</label>
+                <div class='control'>
+                    <input type='text' class='input' id='phone' v-model='form.phone'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("phone")'>{{ form.errors.get('phone') }}</span>
             </div>
-            <div class='form-group'>
-                <span>Spol</span>&nbsp;
-                <input type='radio' id='sex-m' value='M' v-model='form.sex'><label for='sex-m'>Muško</label>&nbsp;
-                <input type='radio' id='sex-f' value='F' v-model='form.sex'><label for='sex-f'>Žensko</label>
-                <span class='error-block' v-if='form.errors.has("sex")'>{{ form.errors.get('sex') }}</span>
+            <div class='field'>
+                <div class='control'>
+                    <label for='sex-m' class='label'>
+                        <input type='radio' id='sex-m' value='M' v-model='form.sex'>
+                        Muško
+                    </label>
+                    <label for='sex-f' class='label'>
+                        <input type='radio' id='sex-f' value='F' v-model='form.sex'>
+                        Žensko
+                    </label>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("sex")'>{{ form.errors.get('sex') }}</span>
             </div>
-            <div class='form-group'>
-                <label for='joined_at'>* Pridružio se</label>
-                <input type='date' id='joined_at' v-model='form.joined_at'>
-                <span class='error-block' v-if='form.errors.has("joined_at")'>{{ form.errors.get('joined_at') }}</span>
+            <div class='field'>
+                <label class='label' for='joined_at'>* Pridružio se</label>
+                <div class='control'>
+                    <input type='date' class='input' id='joined_at' v-model='form.joined_at'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("joined_at")'>{{ form.errors.get('joined_at') }}</span>
             </div>
-            <div class='form-group'>
-                <label for='active'>Član je aktivan</label>&nbsp;
-                <input type='checkbox' id='active' v-model='form.active'>
-                <span class='error-block' v-if='form.errors.has("active")'>{{ form.errors.get('active') }}</span>
+            <div class='field'>
+                <div class='control'>
+                    <label class='checkbox' for='active'>
+                        <input type='checkbox' class='checkbox' id='active' v-model='form.active'>
+                        Član je aktivan
+                    </label>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("active")'>{{ form.errors.get('active') }}</span>
             </div>
-            <input type='submit' :disabled='loading' value='Uredi' class='form-btn' v-if='member'>
-            <input type='submit' :disabled='loading' value='Kreiraj' class='form-btn' v-if='!member'>
+            <input type='submit' :disabled='loading' value='Uredi' class='button' v-if='member'>
+            <input type='submit' :disabled='loading' value='Kreiraj' class='button' v-if='!member'>
         </form>
     </div>
 </template>

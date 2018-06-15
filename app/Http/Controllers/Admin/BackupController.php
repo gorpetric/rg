@@ -29,7 +29,7 @@ class BackupController extends Controller
 
         $backups = array_reverse($backups);
 
-        return view('admin.backup.index', compact('backups'));
+        return view('admin.backup', compact('backups'));
     }
 
     public function create()

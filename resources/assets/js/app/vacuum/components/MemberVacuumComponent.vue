@@ -1,23 +1,26 @@
 <template>
-    <div class='container'>
-        <h3>{{ member.name }} <small>- Vacuum</small></h3>
-        <p><button :disabled='!canCreateNewGroup()' @click='creating_new_group = true' class='btn'>Nova grupa termina</button></p>
+    <div class='section container content'>
+        <h3 class='title is-4'>{{ member.name }} <small>- Vacuum</small></h3>
+        <p><button :disabled='!canCreateNewGroup()' @click='creating_new_group = true' class='button'>Nova grupa termina</button></p>
 
         <div class='new_group' v-if='creating_new_group'>
-            <div class='form-group'>
-                <label for='noa'>Broj termina</label>
-                <input type='number' v-model='new_values.num_of_appointments' id='noa' style='width:auto'>
-                <span class='error-block' v-if='new_values.errors.has("num_of_appointments")'>{{ new_values.errors.get('num_of_appointments') }}</span>
+            <div class='field has-addons'>
+                <p class='control has-icons-left'>
+                    <input type='number' class='input' v-model='new_values.num_of_appointments' placeholder='Broj termina'>
+                    <span class='icon is-left'><i class='fas fa-sort-numeric-up'></i></span>
+                </p>
+                <p class='control has-icons-left'>
+                    <input type='number' class='input' v-model='new_values.price_per_appointment' placeholder='Cijena po terminu'>
+                    <span class='icon is-left'><i class='fas fa-dollar-sign'></i></span>
+                </p>
+                <p class='control'>
+                    <button class='button' :disabled='loading' @click='createNewGroup'>Kreiraj</button>
+                </p>
             </div>
-            <div class='form-group'>
-                <label for='ppa'>Cijena po terminu</label>
-                <input type='number' v-model='new_values.price_per_appointment' id='ppa' style='width:auto'>
-                <span class='error-block' v-if='new_values.errors.has("price_per_appointment")'>{{ new_values.errors.get('price_per_appointment') }}</span>
-            </div>
-            <p>
-                <button class='form-btn' :disabled='loading' @click='createNewGroup'>Kreiraj</button>
-                <a href='#' @click.prevent='creating_new_group = false'>Odustani</a>
-            </p>
+            <a href='#' @click.prevent='creating_new_group = false'>Odustani</a>
+
+            <span class='help is-danger' v-if='new_values.errors.has("num_of_appointments")'>{{ new_values.errors.get('num_of_appointments') }}</span>
+            <span class='help is-danger' v-if='new_values.errors.has("price_per_appointment")'>{{ new_values.errors.get('price_per_appointment') }}</span>
         </div>
 
         <vacuum-appointment-group v-for='group in member.vacuum_appointment_groups' :key='group.id' :member='member.id' :parts='parts' :groupprop='group'></vacuum-appointment-group>

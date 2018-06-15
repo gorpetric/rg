@@ -21,7 +21,7 @@
         }
     </script>
 </head>
-<body>
+<body class='has-navbar-fixed-top'>
     <div id='app'>
         @include('partials._nav')
         <main class='main'>@yield('content')</main>
