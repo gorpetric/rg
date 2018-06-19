@@ -1,5 +1,6 @@
 <template>
     <div class='section container content'>
+        <h1 class='title is-3'>Članovi</h1>
         <input type='text' class='input' v-model='searchQuery' placeholder='Petraži po imenu'>
         <div v-if='loading' class='loader'></div>
         <div class='columns' style='margin-top:20px' v-else>
