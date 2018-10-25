@@ -3,3 +3,18 @@
 
 .modal-card-title
     font-size: inherit
+
+main.main
+    position: relative
+    min-height: calc(100vh - #{$navbar-height})
+
+#home-about
+    min-height: calc(100vh - #{$navbar-height})
+    background: $black url(/img/gym.jpg) no-repeat fixed center
+
+    img.home-logo
+        position: absolute
+        opacity: .1
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
