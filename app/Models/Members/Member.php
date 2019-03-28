@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    protected $fillable = ['name', 'address', 'phone', 'sex', 'active', 'joined_at'];
+    protected $fillable = ['name', 'address', 'phone', 'sex', 'active', 'joined_at', 'birthday', 'oib'];
 
-    protected $dates = ['joined_at'];
+    protected $dates = ['joined_at', 'birthday'];
 
     public function payments()
     {

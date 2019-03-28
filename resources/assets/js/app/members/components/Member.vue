@@ -8,7 +8,9 @@
         <div class='info' :class='showInfo()'>
             Adresa: <strong v-if='member.address'>{{ member.address }}</strong><i v-else><small>nije upisano</small></i><br>
             Kontakt broj: <strong v-if='member.phone'>{{ member.phone }}</strong><i v-else><small>nije upisano</small></i><br>
-            Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br><br>
+            OIB: <strong v-if='member.oib'>{{ member.oib }}</strong><i v-else><small>nije upisano</small></i><br>
+            Datum učlanjenja: <strong>{{ member.joined_at | moment }}</strong><br>
+            Datum rođenja: <strong v-if='member.birthday'>{{ member.birthday | moment }}</strong><i v-else><small>nije upisano</small></i><br><br>
             <button class='button' @click='editMemberShowing = 1'><i class='fas fa-edit'></i>&nbsp;Uredi</button>
             <button class='button' @click='paymentsShowing = 1'><i class='fas fa-euro-sign'></i>&nbsp;Plaćanja</button>
         </div>

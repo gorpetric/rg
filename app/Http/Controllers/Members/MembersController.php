@@ -48,6 +48,8 @@ class MembersController extends Controller
             'sex' => $request->sex,
             'joined_at' => $request->joined_at,
             'active' => $request->active ? 1 : 0,
+            'oib' => $request->oib ?: null,
+            'birthday' => $request->birthday ?: null,
         ]);
 
         $member->load('payments');
@@ -71,7 +73,11 @@ class MembersController extends Controller
             'sex' => $request->sex,
             'active' => $request->active ? 1 : 0,
             'joined_at' => $request->joined_at,
+            'oib' => $request->oib ?: null,
+            'birthday' => $request->birthday ?: null,
         ]);
+
+        $member->touch();
 
         $member->load('payments');
 

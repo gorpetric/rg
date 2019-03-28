@@ -24,6 +24,13 @@
                 <span class='help is-danger' v-if='form.errors.has("phone")'>{{ form.errors.get('phone') }}</span>
             </div>
             <div class='field'>
+                <label class='label' for='address'>OIB</label>
+                <div class='control'>
+                    <input type='text' class='input' id='address' v-model='form.oib'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("oib")'>{{ form.errors.get('oib') }}</span>
+            </div>
+            <div class='field'>
                 <div class='control'>
                     <label for='sex-m' class='label'>
                         <input type='radio' id='sex-m' value='M' v-model='form.sex'>
@@ -42,6 +49,13 @@
                     <input type='date' class='input' id='joined_at' v-model='form.joined_at'>
                 </div>
                 <span class='help is-danger' v-if='form.errors.has("joined_at")'>{{ form.errors.get('joined_at') }}</span>
+            </div>
+            <div class='field'>
+                <label class='label' for='joined_at'>Datum rođenja</label>
+                <div class='control'>
+                    <input type='date' class='input' id='joined_at' v-model='form.birthday'>
+                </div>
+                <span class='help is-danger' v-if='form.errors.has("birthday")'>{{ form.errors.get('birthday') }}</span>
             </div>
             <div class='field'>
                 <div class='control'>
@@ -79,6 +93,8 @@
                     sex: this.member ? this.member.sex : 'M',
                     joined_at: this.member ? moment(this.member.joined_at).format('YYYY-MM-DD') : '',
                     active: this.member ? this.member.active : 1,
+                    birthday: (this.member && this.member.birthday !== null) ? moment(this.member.birthday).format('YYYY-MM-DD') : '',
+                    oib: this.member ? this.member.oib : ''
                 }),
                 isSuccess: false
             }

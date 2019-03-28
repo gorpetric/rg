@@ -29,6 +29,8 @@ class NewEditMemberRequest extends FormRequest
             'phone' => 'max:50',
             'sex' => 'required|in:M,F',
             'joined_at' => 'required|date',
+            'birthday' => 'nullable|date',
+            'oib' => 'max:50',
         ];
     }
 }
