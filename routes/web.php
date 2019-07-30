@@ -15,9 +15,18 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('privacy', 'HomeController@privacy')->name('privacy');
 
-Route::get('/login/{service}', 'SocialLoginController@redirect');
-Route::get('/login/{service}/callback', 'SocialLoginController@callback');
-Route::get('/logout', 'HomeController@logout')->name('logout')->middleware('auth');
+//Route::get('/login/{service}', 'SocialLoginController@redirect');
+//Route::get('/login/{service}/callback', 'SocialLoginController@callback');
+Route::get('login', 'AuthController@index')->name('login')->middleware('guest');
+Route::post('login', 'AuthController@login')->name('login')->middleware('guest');
+Route::get('logout', 'AuthController@logout')->name('logout')->middleware('auth');
+
+Route::group([
+    'middleware' => ['auth'],
+], function() {
+    Route::get('auth/change-password', 'AuthController@changePassword')->name('auth.changepassword');
+    Route::post('auth/change-password', 'AuthController@postChangePassword')->name('auth.changepassword');
+});
 
 Route::delete('/impersonate', 'Admin\ImpersonateController@destroy')->name('admin.users.impersonate.stop');
 

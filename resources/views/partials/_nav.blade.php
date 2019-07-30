@@ -35,12 +35,14 @@
                                 </form>
                                 <hr class='navbar-divider'>
                             @endimpersonating
+                            <a href='{{ route("auth.changepassword") }}' class='navbar-item'>Promjena lozinke</a>
                             <a href='{{ route("logout") }}' class='navbar-item'><i class='fas fa-sign-out-alt'></i>&nbsp;Odjava</a>
                         </div>
                     </div>
                 @endauth
                 @guest
-                    <a href='/login/facebook' class='navbar-item'>Prijava &nbsp;<i class='fab fa-facebook-square'></i></a>
+                    <!--<a href='/login/facebook' class='navbar-item'>Prijava &nbsp;<i class='fab fa-facebook-square'></i></a>-->
+                    <a href='{{ route("login") }}' class='navbar-item'>Prijava</a>
                 @endguest
             </div>
         </div>
