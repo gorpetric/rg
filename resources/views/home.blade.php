@@ -10,9 +10,7 @@
         <p class='has-text-centered has-text-white'>
             od ponedjeljka do petka&nbsp;<i class='fas fa-clock'></i>&nbsp;09 - 22<br>
             subotom&nbsp;<i class='fas fa-clock'></i>&nbsp;09 - 20<br>
-            nedjeljom&nbsp;<i class='fas fa-clock'></i>&nbsp;10 - 18<br><br>
-            cijena mjesečne karte&nbsp;<i class='fas fa-money-bill-alt'></i>&nbsp;{{ $membership_monthly }} kn<br>
-            cijena dnevne karte&nbsp;<i class='fas fa-money-bill-alt'></i>&nbsp;{{ $membership_daily }} kn
+            nedjeljom&nbsp;<i class='fas fa-clock'></i>&nbsp;10 - 18
         </p>
         <img class='home-logo' src='{{ asset("img/logo.png") }}' alt='Royal Gym logo'>
     </div>

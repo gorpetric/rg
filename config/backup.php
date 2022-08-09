@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => 'Royal-Gym-backup',
+        'name' => 'RG-backup',
 
         'source' => [
 
@@ -63,6 +63,7 @@ return [
              */
             'disks' => [
                 'local',
+                'google',
             ],
         ],
     ],
