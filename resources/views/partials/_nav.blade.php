@@ -18,7 +18,8 @@
                         <div class='navbar-dropdown is-right'>
                             @hasanyrole('admin|boss')
                                 <a href='{{ route("members.index") }}' class='navbar-item'>Članovi</a>
-                                <a href='{{ route("members.vacuum.index") }}' class='navbar-item'>Vacuum</a>
+                                <a href='{{ route("members.stats.index") }}' class='navbar-item'>Statistika</a>
+                                <!--<a href='{{ route("members.vacuum.index") }}' class='navbar-item'>Vacuum</a>-->
                                 <hr class='navbar-divider'>
                             @endhasanyrole
                             @role('admin')

@@ -14,7 +14,6 @@
                     <template v-if='searchQuery.length'>Pretraživanje: {{ searchedActive.length + searchedInactive.length }}</template>
                 </p>
                 <button class='button' @click='newMemberShowing = 1'><i class='fas fa-user-plus'></i>&nbsp;Novi član</button>
-                <button class='button' @click='statsShowing = 1'><i class='fas fa-list-ol'></i>&nbsp;Statistika</button>
             </div>
             <div class='column is-three-quarters members-list'>
                 <div class='active' v-show='filter.active && searchedActive.length'>
@@ -32,12 +31,6 @@
                     <new-or-edit-member></new-or-edit-member>
                 </div>
             </modal>
-            <modal v-if='statsShowing' @close='statsShowing = 0'>
-                <span slot='header'>Statistika</span>
-                <div slot='body'>
-                    <member-payments-monthly-stats></member-payments-monthly-stats>
-                </div>
-            </modal>
         </div>
     </div>
 </template>
@@ -51,7 +44,6 @@
             return {
                 searchQuery: '',
                 newMemberShowing: 0,
-                statsShowing: 0,
                 filter: {
                     active: true,
                     inactive: true

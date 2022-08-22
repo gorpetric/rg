@@ -40,7 +40,6 @@ Route::group([
     Route::delete('{member}/payments/{payment}', 'Members\MemberPaymentsController@deletePayment');
     Route::post('{member}/edit', 'Members\MembersController@postEditMember');
     Route::post('new', 'Members\MembersController@postNewMember');
-    Route::get('stats/monthly', 'Members\MemberPaymentsController@getMonthlyStats');
 
     Route::group([
         'prefix' => 'vacuum'
@@ -54,6 +53,13 @@ Route::group([
         Route::post('{member}/{group}/{appointment}/delete-measure', 'Members\MemberVacuumController@deleteMeasurement');
         Route::post('{member}/{group}/{appointment}/complete-appointment', 'Members\MemberVacuumController@completeAppointment');
         Route::post('{member}/{group}/{appointment}/edit-appointment', 'Members\MemberVacuumController@editAppointment');
+    });
+
+    Route::group([
+        'prefix' => 'stats'
+    ], function() {
+        Route::get('', 'Members\MembersStatsController@index')->name('members.stats.index');
+        Route::get('get-stats', 'Members\MembersStatsController@getStats');
     });
 });
 
