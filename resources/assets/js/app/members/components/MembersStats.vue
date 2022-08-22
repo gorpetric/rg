@@ -69,7 +69,7 @@
                         <tr v-for='d in data'>
                             <td>{{ d.onlyyear }}</td>
                             <td v-if='statsType == "monthly"'>{{ d.onlymonth }}</td>
-                            <td>{{ d.valuesum }}</td>
+                            <td>{{ d.valuesum | money }}</td>
                         </tr>
                     </tbody>
                 </table>
