@@ -118,7 +118,6 @@
                     this.form.errors.clear()
                     this.loading = 0
                     this.data = response.data.data
-                    console.log(this.data)
                 }).catch((errors) => {
                     this.loading = 0
                     this.form.errors.record(errors.response.data.errors)
