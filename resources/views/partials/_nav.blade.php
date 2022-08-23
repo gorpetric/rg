@@ -25,6 +25,7 @@
                             @role('admin')
                                 <a href='{{ route("admin.index") }}' class='navbar-item'>Admin</a>
                                 <a href='{{ route("admin.backup.index") }}' class='navbar-item'>Backup</a>
+                                <a href='{{ route("admin.settings.index") }}' class='navbar-item'>Settings</a>
                                 <a href='{{ route("admin.logs") }}' class='navbar-item'>Logs</a>
                                 <hr class='navbar-divider'>
                             @endrole

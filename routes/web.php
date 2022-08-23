@@ -80,4 +80,11 @@ Route::group([
     });
 
     Route::get('logs', 'Admin\AdminController@getLogs')->name('admin.logs');
+
+    Route::group(['prefix' => 'settings'], function() {
+        Route::get('', 'Admin\SettingsController@index')->name('admin.settings.index');
+        Route::post('', 'Admin\SettingsController@postNewSetting');
+        Route::post('{setting}', 'Admin\SettingsController@postEditSetting');
+        Route::delete('{setting}/delete', 'Admin\SettingsController@deleteSetting');
+    });
 });

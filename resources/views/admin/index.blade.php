@@ -4,7 +4,7 @@
 @section('description'){{ 'Royal Gym Brezje - Admin area' }}@stop
 
 @section('content')
-<div class='container content'>
+<div class='section container content'>
     <h1 class='title is-3'>Admin</h1>
     @foreach($users as $user)
         <div>
