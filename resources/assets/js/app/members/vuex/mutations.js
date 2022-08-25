@@ -4,6 +4,9 @@ export const setData = (state, data) => {
 
     state.membership_monthly = data.meta.membership_monthly
     state.membership_daily = data.meta.membership_daily
+
+    state.currencies.all = data.meta.currencies.all
+    state.currencies.default = data.meta.currencies.default
 }
 
 export const toggleLoading = (state) => {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Members;
 
 use App\Models\Setting;
+use App\Models\Currency;
 use Illuminate\Http\Request;
 use App\Models\Members\Member;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,10 @@ class MembersController extends Controller
     {
         $membership_monthly = Setting::where('key', 'membership_monthly')->first()->value;
         $membership_daily = Setting::where('key', 'membership_daily')->first()->value;
+        $currency_default_code = Setting::where('key', 'currency_default_code')->first()->value ?: 'HRK';
+
+        $currencies = Currency::get()->toArray();
+        $default_currency = Currency::where('code', $currency_default_code)->first()->toArray();
 
         $activeMembers = Member::active()->with('payments')->get()->toArray();
         $inactiveMembers = Member::inactive()->with('payments')->get()->toArray();
@@ -27,6 +32,11 @@ class MembersController extends Controller
             'meta' => [
                 'membership_monthly' => $membership_monthly,
                 'membership_daily' => $membership_daily,
+
+                'currencies' => [
+                    'all' => $currencies,
+                    'default' => $default_currency,
+                ],
             ],
             'members' => [
                 'active' => $activeMembers,

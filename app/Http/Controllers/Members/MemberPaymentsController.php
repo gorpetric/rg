@@ -15,6 +15,7 @@ class MemberPaymentsController extends Controller
             'value' => 'required|integer|digits_between:1,3',
             'valid_from' => 'required|date',
             'valid_until' => 'required|date',
+            'currency' => 'required|exists:currencies,id',
         ]);
 
         $newPayment = $member->payments()->create([
@@ -22,6 +23,7 @@ class MemberPaymentsController extends Controller
             'valid_from' => $request->valid_from,
             'valid_until' => $request->valid_until,
             'description' => $request->description,
+            'currency_id' => $request->currency,
         ]);
 
         logdb('Member payment created', [
@@ -33,8 +35,11 @@ class MemberPaymentsController extends Controller
                 'valid_from' => $newPayment->valid_from,
                 'valid_until' => $newPayment->valid_until,
                 'description' => $newPayment->description,
+                'currency_id' => $newPayment->currency_id,
             ],
         ]);
+
+        $newPayment->load('currency');
 
         return response()->json([
             'data' => $newPayment,

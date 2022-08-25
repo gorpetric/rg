@@ -49,18 +49,10 @@ class MembersStatsController extends Controller
 
     private function getStatsByMonth(Request $request)
     {
-        $data = [];
-        $total = 0;
-
         $payments = MemberPayment::whereYear('valid_from', $request->year)->whereMonth('valid_from', $request->month)->get();
-        foreach($payments as $payment) {
-            $data['payments'][] = $payment->load('member');
-            $total += $payment->value;
-        }
+        $payments->load('member');
 
-        $data['total'] = $total;
-
-        return $data;
+        return $payments;
     }
 
     private function getStatsMonthly(Request $request)
@@ -70,10 +62,11 @@ class MembersStatsController extends Controller
         $data = MemberPayment::select(
             DB::raw("SUM(value) AS valuesum"),
             DB::raw("DATE_FORMAT(valid_from, '%m') AS onlymonth"),
-            DB::raw("DATE_FORMAT(valid_from, '%Y') AS onlyyear")
+            DB::raw("DATE_FORMAT(valid_from, '%Y') AS onlyyear"),
+            'currency_id'
         )
         ->orderBy('valid_from', 'desc')
-        ->groupBy(DB::raw("onlymonth, onlyyear"))
+        ->groupBy(DB::raw("onlymonth, onlyyear, currency_id"))
         ->get();
 
         return $data;
@@ -85,10 +78,11 @@ class MembersStatsController extends Controller
 
         $data = MemberPayment::select(
             DB::raw("SUM(value) AS valuesum"),
-            DB::raw("DATE_FORMAT(valid_from, '%Y') AS onlyyear")
+            DB::raw("DATE_FORMAT(valid_from, '%Y') AS onlyyear"),
+            'currency_id'
         )
         ->orderBy('valid_from', 'desc')
-        ->groupBy(DB::raw("onlyyear"))
+        ->groupBy(DB::raw("onlyyear, currency_id"))
         ->get();
 
         return $data;

@@ -36,7 +36,13 @@
             <div v-if='statsType == "by-month"'>
                 <p v-if='!Object.keys(data).length'>Nema zapisa</p>
                 <div v-else style='padding: 10px' class='table-container'>
-                    <p>Ukupno: {{ data.total | money }} kn</p>
+                    <p>
+                        Ukupno
+                        <strong v-for='(pt, ind) in byMonthTotals()'>
+                            {{ pt.sum | money }} {{ pt.symbol }}
+                            <span v-if='ind !== Object.keys(byMonthTotals()).length - 1'>&nbsp;&&nbsp;</span>
+                        </strong>
+                    </p>
                     <table class='table is-bordered is-striped is-hoverable is-fullwidth'>
                         <thead>
                             <tr>
@@ -46,9 +52,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for='payment in data.payments'>
+                            <tr v-for='payment in data'>
                                 <td>{{ payment.valid_from | moment }}</td>
-                                <td>{{ payment.value }}</td>
+                                <td>{{ payment.value }} {{ payment.currency.symbol }}</td>
                                 <td>{{ payment.member.name }}</td>
                             </tr>
                         </tbody>
@@ -62,6 +68,7 @@
                         <tr>
                             <th>Godina</th>
                             <th v-if='statsType == "monthly"'>Mjesec</th>
+                            <th>Valuta</th>
                             <th>Ukupno</th>
                         </tr>
                     </thead>
@@ -69,7 +76,8 @@
                         <tr v-for='d in data'>
                             <td>{{ d.onlyyear }}</td>
                             <td v-if='statsType == "monthly"'>{{ d.onlymonth }}</td>
-                            <td>{{ d.valuesum | money }}</td>
+                            <td>{{ d.currency.code }}</td>
+                            <td>{{ d.valuesum | money }} {{ d.currency.symbol }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -110,6 +118,25 @@
             }
         },
         methods: {
+            byMonthTotals() {
+                let totals = []
+
+                this.data.forEach(payment => {
+                    let tot = _.find(totals, t => t.id == payment.currency_id)
+                    if(!tot) {
+                        totals.push({
+                            'id': payment.currency_id,
+                            'symbol': payment.currency.symbol,
+                            'sum': 0
+                        })
+                    }
+
+                    tot = _.find(totals, t => t.id == payment.currency_id)
+                    tot.sum += +payment.value
+                })
+
+                return _.sortBy(totals, 'id')
+            },
             getStats() {
                 this.loading = 1
                 this.data = []

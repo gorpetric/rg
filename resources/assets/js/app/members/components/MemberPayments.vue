@@ -18,6 +18,22 @@
 
             <div class='field is-horizontal'>
                 <div class='field-label'>
+                    <label class='label'>* Valuta</label>
+                </div>
+                <div class='field-body'>
+                    <div class='field'>
+                        <div class='select'>
+                            <select v-model='form.currency'>
+                                <option v-for='curr in currencies.all' :value='curr.id' :selected='curr.id == currencies.default.id'>{{ curr.code }}</option>
+                            </select>
+                        </div>
+                        <span class='help is-danger' v-if='form.errors.has("currency")'>{{ form.errors.get('currency') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='field is-horizontal'>
+                <div class='field-label'>
                     <label class='label'>* Vrijedi od</label>
                 </div>
                 <div class='field-body'>
@@ -73,14 +89,20 @@
             </div>
             <hr>
         </div>
-        <p>Ukupno: {{ getPaymentsTotal() | money }} kn</p>
+        <p>
+            Ukupno:
+             <strong v-for='(pt, ind) in getPaymentsTotal()'>
+                 {{ pt.sum | money }} {{ pt.symbol }}
+                 <span v-if='ind !== Object.keys(getPaymentsTotal()).length - 1'>&nbsp;&&nbsp;</span>
+             </strong>
+        </p>
 
         <div class='table-container'>
             <table class='table is-striped is-hoverable is-fullwidth'>
                 <tbody>
                     <tr v-for='(payment, index) in member.payments'>
                         <td>
-                            Cijena: <strong>{{ payment.value }}</strong><br>
+                            Cijena: <strong>{{ payment.value }}</strong>&nbsp;<strong v-if='payment.currency'>{{ payment.currency.symbol }}</strong><br>
                             Vrijedi od: <strong>{{ payment.valid_from | moment }}</strong><br>
                             Vrijedi do: <strong>{{ payment.valid_until | moment }}</strong><br>
                             <span v-if=payment.description>Napomena: <strong>{{ payment.description }}</strong></span>
@@ -115,14 +137,16 @@
                     value: 100,
                     valid_from: null,
                     valid_until: null,
-                    description: null
+                    description: null,
+                    currency: 1
                 })
             }
         },
         computed: {
             ...mapGetters({
                 membership_monthly: 'members/membership_monthly',
-                membership_daily: 'members/membership_daily'
+                membership_daily: 'members/membership_daily',
+                currencies: 'members/currencies'
             })
         },
         methods: {
@@ -130,14 +154,27 @@
                 return getLatestValidUntil(this.member)
             },
             getPaymentsTotal() {
-                let total = 0
-                this.member.payments.forEach((payment) => {
-                    total += +payment.value
+                let totals = []
+
+                this.member.payments.forEach(payment => {
+                    let tot = _.find(totals, t => t.id == payment.currency_id)
+                    if(!tot) {
+                        totals.push({
+                            'id': payment.currency_id,
+                            'symbol': payment.currency.symbol,
+                            'sum': 0
+                        })
+                    }
+
+                    tot = _.find(totals, t => t.id == payment.currency_id)
+                    tot.sum += +payment.value
                 })
-                return total
+
+                return _.sortBy(totals, 'id')
             },
             setUpNewPaymentInputs() {
                 this.form.description = null
+                this.form.currency = this.currencies.default.id
 
                 if(this.member.active) {
                     this.form.value = this.membership_monthly
